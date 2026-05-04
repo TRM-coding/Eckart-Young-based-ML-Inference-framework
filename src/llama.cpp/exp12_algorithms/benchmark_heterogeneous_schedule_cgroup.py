@@ -30,6 +30,7 @@ from benchmark_model_schedule_cgroup import (
     sudo_sh,
 )
 from build_model_profile import LatencyPredictor, build_profile, cpu_spec
+from build_offload_profile import build_candidates
 from run_exp12_local import DEFAULT_BINARY, DEFAULT_MODEL, EXP_DIR, parse_cpu_list
 
 
@@ -102,6 +103,65 @@ def stop_heterogeneous_load(cgroup: Path, procs: list[subprocess.Popen[str]]) ->
             except ProcessLookupError:
                 pass
     sudo_sh(f"test ! -e {shlex.quote(str(cgroup / 'cgroup.kill'))} || echo 1 > {shlex.quote(str(cgroup / 'cgroup.kill'))}", timeout_s=5.0)
+
+
+def available_loads(raw_paths: list[Path]) -> list[int]:
+    loads: set[int] = set()
+    for path in raw_paths:
+        if not path.exists():
+            continue
+        with path.open(newline="") as f:
+            for row in csv.DictReader(f):
+                if row.get("status") == "ok" and row.get("load_pct"):
+                    loads.add(int(float(row["load_pct"])))
+    return sorted(loads)
+
+
+def nearest_load(loads: list[int], target: float) -> int | None:
+    if not loads:
+        return None
+    return min(loads, key=lambda load: (abs(load - target), load))
+
+
+def load_major_only_measurements(summary_csv: Path, scenario: str, all_cpus: list[int]) -> tuple[list[dict[str, Any]], float | None]:
+    if not summary_csv.exists():
+        return [], None
+    candidates: list[dict[str, Any]] = []
+    baseline_ms: float | None = None
+    with summary_csv.open(newline="") as f:
+        for row in csv.DictReader(f):
+            if row.get("scenario") != scenario:
+                continue
+            if baseline_ms is None:
+                try:
+                    baseline_tok_s = float(row.get("baseline_tok_s_median") or 0.0)
+                except ValueError:
+                    baseline_tok_s = 0.0
+                if baseline_tok_s > 0.0:
+                    baseline_ms = 1000.0 / baseline_tok_s
+            try:
+                tok_s = float(row.get("candidate_tok_s_median") or 0.0)
+            except ValueError:
+                continue
+            if tok_s <= 0.0:
+                continue
+            policy = str(row.get("candidate_policy", "major_only_p0"))
+            try:
+                p = int(policy.rsplit("p", 1)[-1])
+            except ValueError:
+                continue
+            run_cpus = [int(item) for item in str(row.get("candidate_cpus", "")).split(",") if item.strip()]
+            minor_cpus = [cpu for cpu in all_cpus if cpu not in set(run_cpus)]
+            candidates.append(
+                {
+                    "p": p,
+                    "major_cpus": run_cpus,
+                    "minor_cpus": minor_cpus,
+                    "total_ms": 1000.0 / tok_s,
+                    "source": str(summary_csv),
+                }
+            )
+    return candidates, baseline_ms
 
 
 def run_scheduler(profile: Path, out_dir: Path, scenario: str, quantum_ms: float) -> dict[str, Any]:
@@ -207,6 +267,7 @@ def summarize(raw_rows: list[dict[str, Any]], schedule_rows: list[dict[str, Any]
                 "baseline_decode_ms_median": median(base_ms),
                 "schedule_decode_ms_median": median(sched_ms),
                 "mode": schedule.get("mode"),
+                "offload_m": schedule.get("offload_m"),
                 "p": schedule.get("p"),
                 "major_cpus": schedule.get("major_cpus"),
                 "minor_cpus": schedule.get("minor_cpus"),
@@ -233,7 +294,12 @@ def main() -> int:
     parser.add_argument("--timeout-budget-ms", type=float, default=8.0)
     parser.add_argument("--request-deadline-factor", type=float, default=1.04)
     parser.add_argument("--local-deadline-factor", type=float, default=1.01)
+    parser.add_argument("--scheduler-min-speedup-vs-baseline", type=float, default=1.0)
+    parser.add_argument("--scheduler-max-speedup-vs-baseline", type=float, default=0.0)
+    parser.add_argument("--quality-first-no-svd", action="store_true")
     parser.add_argument("--quantum-ms", type=float, default=0.01)
+    parser.add_argument("--layer-coop-raw", type=Path, action="append", default=[], help="exp6 layer-coop raw.csv used to add no-SVD offload candidates")
+    parser.add_argument("--major-only-summary", type=Path)
     parser.add_argument("--out-dir", type=Path, default=EXP_DIR / "results/heterogeneous_schedule_effectiveness_20260429_r1")
     args = parser.parse_args()
 
@@ -242,7 +308,7 @@ def main() -> int:
     rates = [float(item) for item in args.rates.split(",") if item.strip()]
     scenarios = json.loads(args.scenarios_json.read_text()) if args.scenarios_json else scenario_defaults()
 
-    sudo_sh("pkill -x stress-ng || true", timeout_s=5.0)
+    measured_offload_loads = available_loads(args.layer_coop_raw)
     raw_rows: list[dict[str, Any]] = []
     schedule_rows: list[dict[str, Any]] = []
 
@@ -269,7 +335,27 @@ def main() -> int:
                 tx_base_ms=2.0,
                 tx_per_layer_ms=0.15,
                 end_per_layer_ms=1.0,
+                scheduler_min_speedup_vs_baseline=args.scheduler_min_speedup_vs_baseline,
+                scheduler_max_speedup_vs_baseline=args.scheduler_max_speedup_vs_baseline,
+                quality_first_no_svd=args.quality_first_no_svd,
             )
+            offload_load = nearest_load(measured_offload_loads, sum(loads) / len(loads)) if args.layer_coop_raw else None
+            if offload_load is not None:
+                profile["offload_candidates"] = build_candidates(args.layer_coop_raw, offload_load, int(profile.get("n_layers", 28)))
+                profile["offload_candidate_source"] = {
+                    "raw_csv": [str(path) for path in args.layer_coop_raw],
+                    "load_pct": offload_load,
+                    "scenario_avg_load": sum(loads) / len(loads),
+                    "selection": "nearest measured uniform PC load",
+                    "semantics": "PC=[0,M), Phone=[M,n_layers)",
+                }
+            if args.major_only_summary:
+                major_only_candidates, measured_baseline_ms = load_major_only_measurements(args.major_only_summary, scenario, cpus)
+                if measured_baseline_ms is not None:
+                    profile["baseline_no_svd_ms"] = measured_baseline_ms
+                    profile["baseline_no_svd_source"] = str(args.major_only_summary)
+                if major_only_candidates:
+                    profile["major_only_candidates"] = major_only_candidates
             profile_path = args.out_dir / f"{scenario}.profile.json"
             profile_path.write_text(json.dumps(profile, ensure_ascii=False, indent=2) + "\n")
             schedule = run_scheduler(profile_path, args.out_dir, scenario, args.quantum_ms)
@@ -287,6 +373,7 @@ def main() -> int:
                     "cpus": cpu_spec(cpus),
                     "loads": ",".join(str(load) for load in loads),
                     "mode": schedule.get("mode"),
+                    "offload_m": schedule.get("offload_m"),
                     "feasible": schedule.get("feasible"),
                     "p": local.get("p"),
                     "major_cpus": cpu_spec(major),
@@ -302,6 +389,7 @@ def main() -> int:
             )
 
             run_cgroup = make_cgroup(args.cgroup_root, f"exp12_hetero_run_{scenario}", cpus)
+            major_run_cgroup = make_cgroup(args.cgroup_root, f"exp12_hetero_major_run_{scenario}", major) if major else None
             load_cgroup = make_cgroup(args.cgroup_root, f"exp12_hetero_load_{scenario}", cpus)
             for rep in range(args.repeats):
                 load_procs = start_heterogeneous_load(load_cgroup, cpus, loads)
@@ -321,7 +409,40 @@ def main() -> int:
                     )
                     raw_rows.append(baseline)
 
-                    if schedule.get("mode") == "local" and clipped == 0:
+                    if schedule.get("mode") == "major_only_no_svd" and major:
+                        major_only = decode_once(
+                            args.binary,
+                            args.model,
+                            major_run_cgroup or run_cgroup,
+                            major,
+                            args.tokens,
+                            args.timeout_s,
+                        )
+                        try:
+                            base_tok = float(baseline.get("decode_tok_s") or 0.0)
+                            major_tok = float(major_only.get("decode_tok_s") or 0.0)
+                        except (TypeError, ValueError):
+                            base_tok = major_tok = 0.0
+                        if major_tok > base_tok:
+                            scheduled = major_only
+                            scheduled_status = scheduled.get("status")
+                        else:
+                            scheduled = dict(baseline)
+                            scheduled_status = "runtime_fallback_to_baseline"
+                        scheduled.update(
+                            {
+                                "scenario": scenario,
+                                "repeat": rep,
+                                "n_cores": len(cpus),
+                                "cpus": cpu_spec(cpus),
+                                "loads": ",".join(str(load) for load in loads),
+                                "policy": "model_schedule",
+                                "status": scheduled_status,
+                                "schedule_mode": schedule.get("mode"),
+                                "clipped_layers": clipped,
+                            }
+                        )
+                    elif schedule.get("mode") in ("local", "baseline_no_svd") and clipped == 0:
                         scheduled = dict(baseline)
                         scheduled.update(
                             {
@@ -373,7 +494,7 @@ def main() -> int:
                 finally:
                     stop_heterogeneous_load(load_cgroup, load_procs)
     finally:
-        sudo_sh("pkill -x stress-ng || true", timeout_s=5.0)
+        pass
 
     summary_rows = summarize(raw_rows, schedule_rows)
     write_csv(
@@ -408,6 +529,7 @@ def main() -> int:
             "cpus",
             "loads",
             "mode",
+            "offload_m",
             "feasible",
             "p",
             "major_cpus",
@@ -442,6 +564,7 @@ def main() -> int:
             "baseline_decode_ms_median",
             "schedule_decode_ms_median",
             "mode",
+            "offload_m",
             "p",
             "major_cpus",
             "minor_cpus",
@@ -459,16 +582,16 @@ def main() -> int:
         f"- repeats: `{args.repeats}`",
         f"- tokens per decode run: `{args.tokens}`",
         "- baseline: no SVD, same core set and same heterogeneous background load",
-        "- model_schedule: model profile + DP scheduler; edge/end offload is skipped because this experiment does not use adb",
+        "- model_schedule: model profile + DP scheduler; edge/end offload rows are selected but not executed because this experiment does not use adb",
         "",
         "## Result",
         "",
-        "| scenario | cores | loads | mode | major | minor | clipped | baseline tok/s | schedule tok/s | speedup |",
-        "|---|---:|---|---|---|---|---:|---:|---:|---:|",
+        "| scenario | cores | loads | mode | M | major | minor | clipped | baseline tok/s | schedule tok/s | speedup |",
+        "|---|---:|---|---|---:|---|---|---:|---:|---:|---:|",
     ]
     for row in summary_rows:
         lines.append(
-            f"| `{row['scenario']}` | {row['n_cores']} | `{row['loads']}` | `{row['mode']}` | "
+            f"| `{row['scenario']}` | {row['n_cores']} | `{row['loads']}` | `{row['mode']}` | {row.get('offload_m') or ''} | "
             f"`{row['major_cpus']}` | `{row['minor_cpus']}` | {row['clipped_layers']} | "
             f"{fmt_float(row['baseline_tok_s_median'])} | {fmt_float(row['schedule_tok_s_median'])} | "
             f"{fmt_float(row['speedup_vs_baseline_median'], digits=3, suffix='x')} |"

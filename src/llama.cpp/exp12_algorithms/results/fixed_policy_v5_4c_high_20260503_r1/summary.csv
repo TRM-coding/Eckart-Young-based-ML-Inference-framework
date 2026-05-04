@@ -1,0 +1,2 @@
+scenario,n_cores,cpus,loads,selected_policy,baseline_runs,scheduler_runs,baseline_tok_s_median,scheduler_tok_s_median,speedup_median
+4c_high,4,"60,61,62,63","70,80,90,100",all_0.7,7,7,19.1827,23.2735,1.2132546513264555

@@ -1,0 +1,3 @@
+scenario,n_cores,cpus,loads,runs,selected_policies,baseline_tok_s_median,scheduler_tok_s_median,speedup_median,speedup_min,speedup_max,in_band_runs,fallback_runs
+4c_front_hot,4,"60,61,62,63","90,70,20,0",5,"all_0.15,all_0.35,all_0.45,baseline_no_svd",18.7585,21.3163,1.1363541861023,1.0,1.1567777302812368,4,1
+4c_high,4,"60,61,62,63","70,80,90,100",5,"all_0.15,all_0.2,all_0.35,all_0.4,all_0.45",20.9148,23.9329,1.1575618903961595,1.144304511637692,1.17177570785041,5,0

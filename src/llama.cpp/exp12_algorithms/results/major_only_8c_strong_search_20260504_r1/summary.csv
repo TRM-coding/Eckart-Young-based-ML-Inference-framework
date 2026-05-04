@@ -1,0 +1,9 @@
+scenario,workers,method,base,best_policy,best_detail,best,speed
+8c_extra_tail2_matrix,"1,1,1,1,1,1,2,2",matrixprod,36.4572,major_only_no_svd,"p=7;major=60,61,62,63,64,65,66",40.1336,1.1008415347311369
+8c_extra_tail4_matrix,"1,1,1,1,2,2,2,2",matrixprod,35.7501,baseline_all_8c,"60,61,62,63,64,65,66,67",35.7501,1.0
+8c_extra_tail6_matrix,"1,1,2,2,2,2,2,2",matrixprod,31.5156,major_only_no_svd,"p=7;major=60,61,62,63,64,65,66",32.324,1.0256507888156976
+8c_extra_tail2_int64,"1,1,1,1,1,1,2,2",int64,39.8379,baseline_all_8c,"60,61,62,63,64,65,66,67",39.8379,1.0
+8c_extra_tail4_int64,"1,1,1,1,2,2,2,2",int64,35.9914,major_only_no_svd,"p=7;major=60,61,62,63,64,65,66",36.741,1.0208271976083176
+8c_extra_tail4_fft,"1,1,1,1,2,2,2,2",fft,35.3375,baseline_all_8c,"60,61,62,63,64,65,66,67",35.3375,1.0
+8c_extra_tail4_prime,"1,1,1,1,2,2,2,2",prime,35.8178,baseline_all_8c,"60,61,62,63,64,65,66,67",35.8178,1.0
+8c_extra_tail4_matrix_p2hot,"1,1,1,1,3,3,3,3",matrixprod,29.9148,major_only_no_svd,"p=6;major=60,61,62,63,64,65",30.2116,1.0099215104229344

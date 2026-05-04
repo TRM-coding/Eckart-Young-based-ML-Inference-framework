@@ -1,0 +1,5 @@
+status,load_pct,split_m,repeat,tokens,threads,generated,steady_decode_ms,steady_throughput,steady_ms_per_token,prefix_decode_ms,server_decode_ms,network_wait_ms,requests,send_bytes,recv_bytes,send_ms,recv_header_ms,roundtrip_ms,server_requests,header_wait_ms,payload_recv_ms,server_final_decode_ms,server_send_ms,port,client_log,server_log
+ok,80,2,0,32,8,32,65907.5,0.485529,2059.61,11315.3,21751.6,32840.4,32,197504,1024,1.75136,54590.2,54592.0,32,11443.0,1935.82,21751.6,4.64552,18300,load80_split2_r0_client.log,load80_split2_r0_server.log
+ok,80,4,0,32,8,32,17981.1,1.77965,561.909,12494.1,1851.23,3635.6,32,197504,1024,1.72856,5485.1,5486.82,32,11335.6,45.7192,1851.23,4.34271,18301,load80_split4_r0_client.log,load80_split4_r0_server.log
+ok,80,6,0,32,8,32,51995.7,0.615435,1624.87,32813.9,3586.81,15594.8,32,197504,1024,1.85139,19179.8,19181.7,32,21138.4,2272.8,3586.81,4.22479,18302,load80_split6_r0_client.log,load80_split6_r0_server.log
+ok,80,8,0,32,8,32,60524.5,0.528712,1891.39,40662.3,3553.17,16308.8,32,197504,1024,1.96818,19860.0,19862.0,32,24586.3,2369.02,3553.17,4.18297,18303,load80_split8_r0_client.log,load80_split8_r0_server.log

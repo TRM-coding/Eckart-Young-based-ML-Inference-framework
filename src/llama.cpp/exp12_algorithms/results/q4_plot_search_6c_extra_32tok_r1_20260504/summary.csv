@@ -1,0 +1,9 @@
+scenario,loads,baseline_tok_s,selected_policy,selected_detail,selected_tok_s,speedup_vs_baseline,ppl,ppl_note
+6c_plot_extra_01,"10,30,70,90,100,100,0,0",10.35,major_only_no_svd,p=1;major=66,17.2867,1.6702125603864735,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+6c_plot_extra_02,"20,40,70,90,100,100,0,0",35.838,baseline_no_svd,,35.838,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+6c_plot_extra_03,"30,50,80,90,100,100,0,0",9.53568,major_only_no_svd,p=1;major=66,21.1675,2.2198207154602505,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+6c_plot_extra_04,"10,60,80,90,100,100,0,0",36.5887,baseline_no_svd,,36.5887,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+6c_plot_extra_05,"40,60,80,90,100,100,0,0",38.3694,baseline_no_svd,,38.3694,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+6c_plot_extra_06,"20,70,80,90,100,100,0,0",36.2656,baseline_no_svd,,36.2656,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+6c_plot_extra_07,"55,65,85,95,100,100,0,0",3.68809,major_only_no_svd,p=1;major=66,16.7317,4.536684300003525,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+6c_plot_extra_08,"15,45,75,95,100,100,0,0",19.3843,baseline_no_svd,,19.3843,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity

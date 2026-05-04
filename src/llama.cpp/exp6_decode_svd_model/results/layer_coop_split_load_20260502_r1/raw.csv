@@ -1,0 +1,7 @@
+status,load_pct,split_m,repeat,tokens,threads,generated,steady_decode_ms,steady_throughput,steady_ms_per_token,prefix_decode_ms,server_decode_ms,network_wait_ms,requests,send_bytes,recv_bytes,send_ms,recv_header_ms,roundtrip_ms,server_requests,header_wait_ms,payload_recv_ms,server_final_decode_ms,server_send_ms,port,client_log,server_log
+ok,0,8,0,64,8,64,3156.61,20.2749,49.3221,793.14,1501.83,861.175,64,395008,2048,6.87995,2356.12,2363.0,64,1553.09,74.651,1501.83,5.75839,18300,load0_split8_r0_client.log,load0_split8_r0_server.log
+ok,0,12,0,64,8,64,3082.92,20.7596,48.1706,1123.91,1087.04,871.449,64,395008,2048,6.69752,1951.79,1958.49,64,1902.63,64.6447,1087.04,5.26453,18301,load0_split12_r0_client.log,load0_split12_r0_server.log
+ok,0,14,0,64,8,64,3312.36,19.3216,51.7556,1027.98,1202.24,1081.89,64,395008,2048,3.76173,2280.37,2284.14,64,1903.83,134.394,1202.24,5.49656,18302,load0_split14_r0_client.log,load0_split14_r0_server.log
+ok,0,16,0,64,8,64,4070.05,15.7246,63.5946,1427.46,1502.09,1140.03,64,395008,2048,6.09392,2636.03,2642.13,64,2477.55,60.1798,1502.09,5.20025,18303,load0_split16_r0_client.log,load0_split16_r0_server.log
+ok,0,20,0,64,8,64,3780.3,16.9299,59.0672,1515.85,1306.37,957.686,64,395008,2048,5.01258,2259.04,2264.05,64,2378.62,65.0191,1306.37,5.21479,18304,load0_split20_r0_client.log,load0_split20_r0_server.log
+ok,50,8,0,64,8,64,97503.4,0.656388,1523.49,79972.7,2397.76,15132.4,64,395008,2048,3.38537,17526.7,17530.1,64,69132.0,4476.56,2397.76,7.14511,18305,load50_split8_r0_client.log,load50_split8_r0_server.log

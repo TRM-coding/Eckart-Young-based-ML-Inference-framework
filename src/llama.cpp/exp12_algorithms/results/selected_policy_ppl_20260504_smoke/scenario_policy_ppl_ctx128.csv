@@ -1,0 +1,10 @@
+scenario,selected_policies,policy_ppl,ppl_min,ppl_max,failed_policies,speedup_median,speedup_min,fallback_runs
+2c_asym_low_high,"all_0.2,all_0.4,trunc_even_0.8",all_0.2=FAIL; all_0.4=1393.3332; trunc_even_0.8=92.4145,92.4145,1393.3332,all_0.2,1.1502174902062503,1.1030269572101161,0
+2c_balanced_mid,"all_0.25,all_0.3,all_0.35,trunc_even_0.85",all_0.25=212.6150; all_0.3=610.6591; all_0.35=768.7028; trunc_even_0.85=105.2645,105.2645,768.7028,,1.1520168844710281,1.1224145345087078,0
+2c_high,"all_0.3,all_0.4,all_0.45,trunc_even_0.85",all_0.3=610.6591; all_0.4=1393.3332; all_0.45=FAIL; trunc_even_0.85=105.2645,105.2645,1393.3332,all_0.45,1.1552691536028836,1.15242706545722,0
+2c_idle_saturated,"all_0.2,all_0.3,all_0.35",all_0.2=FAIL; all_0.3=610.6591; all_0.35=768.7028,610.6591,768.7028,all_0.2,1.1453618545692537,1.14282006005918,0
+4c_balanced_high,"all_0.2,all_0.25,all_0.3",all_0.2=FAIL; all_0.25=212.6150; all_0.3=610.6591,212.615,610.6591,all_0.2,1.141489385375406,1.126626003431319,0
+4c_gradient,"all_0.3,all_0.5,baseline_no_svd,trunc_even_0.8",all_0.3=610.6591; all_0.5=6036.2401; baseline_no_svd=15.1424; trunc_even_0.8=92.4145,15.1424,6036.2401,,1.152594345825115,1.0,1
+8c_high,"all_0.05,all_0.2,baseline_no_svd",all_0.05=FAIL; all_0.2=FAIL; baseline_no_svd=15.1424,15.1424,15.1424,"all_0.05,all_0.2",1.1099475353223422,1.0,2
+4c_front_hot,"all_0.15,all_0.35,all_0.45,baseline_no_svd",all_0.15=FAIL; all_0.35=768.7028; all_0.45=FAIL; baseline_no_svd=15.1424,15.1424,768.7028,"all_0.15,all_0.45",1.1363541861023,1.0,1
+4c_high,"all_0.15,all_0.2,all_0.35,all_0.4,all_0.45",all_0.15=FAIL; all_0.2=FAIL; all_0.35=768.7028; all_0.4=1393.3332; all_0.45=FAIL,768.7028,1393.3332,"all_0.15,all_0.2,all_0.45",1.1575618903961595,1.144304511637692,0

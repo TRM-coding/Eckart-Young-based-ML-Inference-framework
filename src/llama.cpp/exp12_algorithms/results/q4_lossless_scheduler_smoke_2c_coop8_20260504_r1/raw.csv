@@ -1,0 +1,55 @@
+scenario,repeat,policy,detail,status,cpus,loads,decode_tok_s,generation_decode_ms,generated,steady_decode_ms,prefix_decode_ms,server_decode_ms,network_wait_ms,prefill_decode_ms,elapsed_s,client_log,server_log,output_tail
+2c_asym_low_high,0,baseline_no_svd,"60,61",ok,"60,61","20,80",11.6764,2740.58,,,,,,101.449,4.149971008300781,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=2 batch=2
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 11.6764 tokens/s (32 tokens in 2.74058 s of llama_decode)
+End-to-end throughput: 11.6333 tokens/s (32 tokens in 2.75072 s)
+[decode-stage-profile] model_load=1019.36 ms context_create=64.3239 ms tokenize=0.471842 ms prefill_decode=101.449 ms generation_decode=2740.58 ms generation_total=2750.72 ms program_total=3951.96 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=27.641 ms ffn_total=2004.353 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2c_asym_low_high,0,major_only_no_svd,p=1;major=60,ok,"60,61","20,80",6.46342,4950.94,,,,,,176.036,6.288642406463623,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=1 batch=1
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 6.46342 tokens/s (32 tokens in 4.95094 s of llama_decode)
+End-to-end throughput: 6.4502 tokens/s (32 tokens in 4.96109 s)
+[decode-stage-profile] model_load=877.453 ms context_create=56.458 ms tokenize=0.451695 ms prefill_decode=176.036 ms generation_decode=4950.94 ms generation_total=4961.09 ms program_total=6088 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=40.946 ms ffn_total=3702.486 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2c_asym_low_high,0,edge_end_no_svd,"M=2;PC=[0,2);Phone=[2,28)",ok,"60,61","20,80",13.2293,75.5897,32,2418.87,495.29,1137.17,786.266,,4.161327362060547,2c_asym_low_high_r0_M2_client.log,2c_asym_low_high_r0_M2_server.log,
+2c_asym_low_high,0,edge_end_no_svd,"M=4;PC=[0,4);Phone=[4,28)",ok,"60,61","20,80",13.8127,72.3972,32,2316.71,918.281,862.828,535.3,,4.595787763595581,2c_asym_low_high_r0_M4_client.log,2c_asym_low_high_r0_M4_server.log,
+2c_asym_low_high,0,edge_end_no_svd,"M=6;PC=[0,6);Phone=[6,28)",ok,"60,61","20,80",11.9253,83.8554,32,2683.37,1218.63,840.544,624.08,,4.059320449829102,2c_asym_low_high_r0_M6_client.log,2c_asym_low_high_r0_M6_server.log,
+2c_asym_low_high,0,edge_end_no_svd,"M=8;PC=[0,8);Phone=[8,28)",ok,"60,61","20,80",9.8679,101.339,32,3242.84,1659.33,999.975,583.374,,5.320744037628174,2c_asym_low_high_r0_M8_client.log,2c_asym_low_high_r0_M8_server.log,
+2c_asym_low_high,0,edge_end_no_svd,"M=12;PC=[0,12);Phone=[12,28)",ok,"60,61","20,80",7.66181,130.517,32,4176.56,2610.82,793.101,772.435,,5.996924638748169,2c_asym_low_high_r0_M12_client.log,2c_asym_low_high_r0_M12_server.log,
+2c_asym_low_high,0,edge_end_no_svd,"M=16;PC=[0,16);Phone=[16,28)",ok,"60,61","20,80",6.28673,159.065,32,5090.09,3692.05,634.496,763.391,,6.907522916793823,2c_asym_low_high_r0_M16_client.log,2c_asym_low_high_r0_M16_server.log,

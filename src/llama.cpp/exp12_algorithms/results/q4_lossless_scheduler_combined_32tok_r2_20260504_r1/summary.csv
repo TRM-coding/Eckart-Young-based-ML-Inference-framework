@@ -1,0 +1,10 @@
+scenario,loads,baseline_tok_s_median,selected_policy,selected_detail,selected_tok_s_median,speedup_vs_baseline,ppl,ppl_delta,ppl_note,candidate_count
+2c_asym_low_high,"20,80",12.443999999999999,edge_end_no_svd,"M=2;PC=[0,2);Phone=[2,28)",15.571100000000001,1.2512937962070076,15.1424,0.0,no-SVD selected path; same as original Q4 baseline ctx128 sanity,9
+2c_balanced_mid,"50,50",12.64735,edge_end_no_svd,"M=2;PC=[0,2);Phone=[2,28)",17.3932,1.375244616461156,15.1424,0.0,no-SVD selected path; same as original Q4 baseline ctx128 sanity,9
+2c_high,"80,100",12.5518,edge_end_no_svd,"M=2;PC=[0,2);Phone=[2,28)",15.187100000000001,1.2099539508277697,15.1424,0.0,no-SVD selected path; same as original Q4 baseline ctx128 sanity,9
+2c_idle_saturated,"0,100",12.7975,edge_end_no_svd,"M=2;PC=[0,2);Phone=[2,28)",15.13615,1.1827427231881227,15.1424,0.0,no-SVD selected path; same as original Q4 baseline ctx128 sanity,9
+4c_balanced_high,"20,40,60,80",18.66205,baseline_no_svd,"60,61,62,63",18.66205,1.0,15.1424,0.0,no-SVD selected path; same as original Q4 baseline ctx128 sanity,11
+4c_front_hot,"90,70,20,0",10.70025,edge_end_no_svd,"M=2;PC=[0,2);Phone=[2,28)",15.86655,1.482820494848251,15.1424,0.0,no-SVD selected path; same as original Q4 baseline ctx128 sanity,11
+4c_gradient,"0,20,60,100",11.972515,edge_end_no_svd,"M=2;PC=[0,2);Phone=[2,28)",17.1524,1.432648027586518,15.1424,0.0,no-SVD selected path; same as original Q4 baseline ctx128 sanity,11
+4c_high,"70,80,90,100",19.84825,baseline_no_svd,"60,61,62,63",19.84825,1.0,15.1424,0.0,no-SVD selected path; same as original Q4 baseline ctx128 sanity,11
+8c_high,"30,40,50,60,70,80,90,100",28.84885,baseline_no_svd,"60,61,62,63,64,65,66,67",28.84885,1.0,15.1424,0.0,no-SVD selected path; same as original Q4 baseline ctx128 sanity,4

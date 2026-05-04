@@ -17,8 +17,58 @@ Algorithmv2 5.2 的真实 profile 输入仍在完善中。当前已经新增核�
 本目录实现 `algorithm.pdf` 第五章的两个调度算法：
 
 - `scheduler.py`: 本地动态规划调度。输入各层候选 SVD 截断率、主路径耗时、损失和补偿权重，满足“相邻两层不能同时裁剪”的约束，并按裁剪权重分配超时预算。
-- `scheduler.py`: 联合调度。先尝试边侧本地 DP；本地无解时，从后向前搜索最小后层卸载集合，选择满足总时延约束的最大分割点 `m`。
+- `scheduler.py`: 联合调度。先计算本地 SVD/no-SVD DP 最优解，再计算 layer-level no-SVD 端侧卸载候选，最后按预计端到端时延选择更快的方案；不再是“本地可行就一定本地执行”。
+- `build_offload_profile.py`: 将 exp6 `benchmark_layer_coop_split_load.py` 产生的 `raw.csv` 转成 scheduler 可读的 `offload_candidates`。
 - `run_exp12_local.py`: 本机小实验驱动。不使用 adb；复用现有 `decode_svd_test`，默认从 `60-79` 中取 `60-67` 作为电脑端、`68-75` 作为手机端模拟核心。
+
+## Layer Offload 候选
+
+新的 offload profile 使用 exp6 协同推理中的 `M` 语义：
+
+```text
+PC    = [0, M)
+Phone = [M, n_layers)
+```
+
+也就是说，`M` 越小，卸载到手机的层越多；`M` 越大，PC 计算越多。`scheduler.py` 的 JSON 输出中新增了 `offload_m` 字段来显式表示这个语义。历史字段 `split_m` 仍保留用于兼容旧脚本，但它表示的是旧内部格式“PC 最后一层 index”，因此 `offload_m = split_m + 1`。
+
+将已有 layer-coop sweep 结果接入 scheduler：
+
+```bash
+python3 src/llama.cpp/exp12_algorithms/build_offload_profile.py \
+  --profile src/llama.cpp/exp12_algorithms/results/model_profiles_rerun_cgroup_20260429/profile_load_80.json \
+  --layer-coop-raw src/llama.cpp/exp6_decode_svd_model/results/layer_coop_split_load_20260502_r2/raw.csv \
+  --layer-coop-raw src/llama.cpp/exp6_decode_svd_model/results/layer_coop_split_M0_8_load80_20260502_r1/raw.csv \
+  --load-pct 80 \
+  --out-profile /tmp/profile_load80_with_offload.json \
+  --out-csv /tmp/offload_candidates_load80.csv
+```
+
+生成后的 profile 会包含：
+
+```json
+{
+  "offload_candidates": [
+    {
+      "m": 2,
+      "total_ms": 75.8583,
+      "pc_ms": 20.022344,
+      "phone_ms": 29.107375,
+      "network_ms": 26.725344
+    }
+  ]
+}
+```
+
+`scheduler.py` 会把这些 no-SVD layer offload 点作为完整候选，和本地 SVD DP 解比较。如果 offload 的 `total_ms` 更低，会返回：
+
+```text
+mode = edge_end_no_svd
+offload_m = M
+rates = 全 0
+```
+
+如果本地 no-SVD/SVD 更快，则保持 `mode = local`。
 
 ## 运行算法
 

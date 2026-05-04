@@ -1,0 +1,5 @@
+scenario,n_cores,cpus,loads,selected_policy,baseline_runs,scheduler_runs,baseline_tok_s_median,scheduler_tok_s_median,speedup_median
+2c_balanced_mid,2,"60,61","50,50",all_0.5,5,5,11.6719,13.9028,1.1911342626307626
+2c_high,2,"60,61","80,100",trunc_even_0.85,5,5,11.2637,13.3827,1.1881264593339667
+4c_balanced_high,4,"60,61,62,63","20,40,60,80",odd_0.5,5,5,18.607,21.3435,1.147068307626162
+4c_high,4,"60,61,62,63","70,80,90,100",all_0.6,5,5,20.9399,22.6545,1.0818819574114489

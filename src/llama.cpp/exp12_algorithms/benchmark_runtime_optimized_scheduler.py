@@ -37,8 +37,34 @@ def write_even_rate_file(out_dir: Path, name: str, rate: float, n_layers: int = 
     return path
 
 
+def pattern_values(pattern: str, rate: float, n_layers: int = 28) -> list[float]:
+    if pattern == "all":
+        return [rate] * n_layers
+    if pattern in ("odd", "trunc_even"):
+        return [rate if layer % 2 == 1 else 0.0 for layer in range(n_layers)]
+    if pattern == "even":
+        return [rate if layer % 2 == 0 else 0.0 for layer in range(n_layers)]
+    if pattern == "mod3_0":
+        return [rate if layer % 3 == 0 else 0.0 for layer in range(n_layers)]
+    if pattern == "mod3_1":
+        return [rate if layer % 3 == 1 else 0.0 for layer in range(n_layers)]
+    if pattern == "mod3_2":
+        return [rate if layer % 3 == 2 else 0.0 for layer in range(n_layers)]
+    raise ValueError(f"unknown pattern: {pattern}")
+
+
+def write_pattern_rate_file(out_dir: Path, pattern: str, rate: float, n_layers: int = 28) -> Path:
+    path = out_dir / f"{pattern}_{rate:g}.rates.txt"
+    path.write_text(",".join(f"{value:g}" for value in pattern_values(pattern, rate, n_layers)) + "\n")
+    return path
+
+
 def median(values: list[float]) -> float | None:
     return statistics.median(values) if values else None
+
+
+def min_value(values: list[float]) -> float | None:
+    return min(values) if values else None
 
 
 def run_policy(
@@ -55,6 +81,8 @@ def run_policy(
         return decode_once(binary, model, run_cgroup, cpus, tokens, timeout_s)
     if policy.startswith("trunc_even_"):
         return decode_once(binary, model, run_cgroup, cpus, tokens, timeout_s, rates=rate_files[policy])
+    if policy in rate_files:
+        return decode_once(binary, model, run_cgroup, cpus, tokens, timeout_s, rates=rate_files[policy])
     raise ValueError(f"unknown policy: {policy}")
 
 
@@ -69,7 +97,10 @@ def main() -> int:
     parser.add_argument("--validation-repeats", type=int, default=3)
     parser.add_argument("--timeout-s", type=float, default=120.0)
     parser.add_argument("--min-speedup", type=float, default=1.10)
+    parser.add_argument("--max-target-speedup", type=float, default=1.20)
+    parser.add_argument("--guard-min-speedup", type=float, default=1.00)
     parser.add_argument("--rates", default="0.6,0.8,0.9")
+    parser.add_argument("--patterns", default="odd", help="Comma-separated rate patterns: odd,all,even,mod3_0,mod3_1,mod3_2")
     parser.add_argument("--policy-overrides-json", type=Path)
     parser.add_argument("--out-dir", type=Path, default=EXP_DIR / "results/runtime_optimized_scheduler_20260429_r1")
     args = parser.parse_args()
@@ -78,8 +109,17 @@ def main() -> int:
     scenarios = json.loads(args.scenarios_json.read_text()) if args.scenarios_json else scenario_defaults()
     policy_overrides = json.loads(args.policy_overrides_json.read_text()) if args.policy_overrides_json else {}
     rate_values = [float(item) for item in args.rates.split(",") if item.strip()]
-    policies = ["baseline_no_svd"] + [f"trunc_even_{rate:g}" for rate in rate_values]
-    rate_files = {f"trunc_even_{rate:g}": write_even_rate_file(args.out_dir, f"trunc_even_{rate:g}", rate) for rate in rate_values}
+    patterns = [item for item in args.patterns.split(",") if item.strip()]
+    if patterns == ["odd"]:
+        policies = ["baseline_no_svd"] + [f"trunc_even_{rate:g}" for rate in rate_values]
+        rate_files = {f"trunc_even_{rate:g}": write_even_rate_file(args.out_dir, f"trunc_even_{rate:g}", rate) for rate in rate_values}
+    else:
+        rate_files = {
+            f"{pattern}_{rate:g}": write_pattern_rate_file(args.out_dir, pattern, rate)
+            for pattern in patterns
+            for rate in rate_values
+        }
+        policies = ["baseline_no_svd", *rate_files.keys()]
 
     raw_rows: list[dict[str, Any]] = []
     decision_rows: list[dict[str, Any]] = []
@@ -115,15 +155,31 @@ def main() -> int:
                 stop_heterogeneous_load(load_cgroup, load_procs)
 
         baseline_med = median(calibration["baseline_no_svd"])
+        baseline_min = min_value(calibration["baseline_no_svd"])
         best_policy = "baseline_no_svd"
         best_med = baseline_med
+        best_key: tuple[float, float, float] | None = None
         for policy in policies[1:]:
             med = median(calibration[policy])
-            if med is not None and best_med is not None and med > best_med:
+            worst = min_value(calibration[policy])
+            if med is None or worst is None or baseline_med is None or baseline_min is None:
+                continue
+            med_speedup = med / baseline_med
+            worst_speedup = worst / baseline_min if baseline_min > 0 else 0.0
+            if med_speedup < args.min_speedup or worst_speedup < args.guard_min_speedup:
+                continue
+            # Prefer policies in the requested 10-20% band; otherwise choose
+            # the smallest overshoot above the band. This avoids selecting a
+            # very aggressive truncation when a gentler one already works.
+            overshoot = max(0.0, med_speedup - args.max_target_speedup)
+            target_distance = abs(min(med_speedup, args.max_target_speedup) - ((args.min_speedup + args.max_target_speedup) / 2.0))
+            key = (overshoot, target_distance, -med_speedup)
+            if best_key is None or key < best_key:
+                best_key = key
                 best_policy = policy
                 best_med = med
         selected_policy = best_policy
-        if baseline_med is None or best_med is None or best_med < baseline_med * args.min_speedup:
+        if baseline_med is None or best_med is None or best_policy == "baseline_no_svd":
             selected_policy = "baseline_no_svd"
         selected_policy = str(policy_overrides.get(scenario, selected_policy))
 

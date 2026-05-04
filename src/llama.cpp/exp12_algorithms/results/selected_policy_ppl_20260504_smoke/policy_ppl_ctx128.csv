@@ -1,0 +1,14 @@
+policy,ppl,ppl_stderr,abort,log
+baseline_no_svd,15.1424,4.47405,False,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/baseline_no_svd.log
+all_0.05,,,False,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/all_0.05.log
+all_0.1,,,True,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/all_0.1.log
+all_0.15,,,True,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/all_0.15.log
+all_0.2,,,True,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/all_0.2.log
+all_0.25,212.6150,83.46770,False,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/all_0.25.log
+all_0.3,610.6591,251.49859,False,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/all_0.3.log
+all_0.35,768.7028,280.71745,False,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/all_0.35.log
+all_0.4,1393.3332,525.95771,False,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/all_0.4.log
+all_0.45,,,True,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/all_0.45.log
+all_0.5,6036.2401,1679.96292,False,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/all_0.5.log
+trunc_even_0.8,92.4145,32.93104,False,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/trunc_even_0.8.log
+trunc_even_0.85,105.2645,39.13173,False,src/llama.cpp/exp12_algorithms/results/selected_policy_ppl_20260504_smoke/trunc_even_0.85.log

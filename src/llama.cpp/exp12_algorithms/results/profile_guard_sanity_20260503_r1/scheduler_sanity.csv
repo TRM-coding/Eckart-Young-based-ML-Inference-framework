@@ -1,0 +1,5 @@
+scenario,status,feasible,mode,p,major_cpus,minor_cpus,split_m,offloaded_layers,clipped_layers,max_rate,loss,main_ms,total_ms,full_local_ms,estimated_speedup_vs_full_local,local_deadline_ms,request_deadline_ms
+load_0,ok,True,baseline_no_svd,0,,,27,0,0,0.0,0.0,32.0358,32.0358,32.0358,1.0,32.356158,33.317232
+load_50,ok,True,baseline_no_svd,0,,,27,0,0,0.0,0.0,31.8804,31.8804,31.8804,1.0,32.356158,33.317232
+load_80,ok,True,baseline_no_svd,0,,,27,0,0,0.0,0.0,32.4744,32.4744,32.4744,1.0,32.356158,33.317232
+load_100,ok,True,local,7,"60,61,62,63,64,66,67",65,27,0,14,0.5,4.015,32.208125,32.208125,37.0624,1.1507158519783438,32.356158,33.317232

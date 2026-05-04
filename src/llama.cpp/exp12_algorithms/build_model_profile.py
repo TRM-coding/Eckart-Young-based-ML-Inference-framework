@@ -18,6 +18,8 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from loss_table import load_measured_loss_table, measured_or_heuristic_loss
+
 
 EXP_DIR = Path(__file__).resolve().parent
 
@@ -69,8 +71,8 @@ def layer_work_units(n_layers: int, layer: int) -> float:
     return shape / denom
 
 
-def candidate_loss(layer: int, rate: float) -> float:
-    return (rate * rate) * (1.0 + 0.015 * layer)
+def candidate_loss(layer: int, rate: float, loss_table: dict[tuple[int, str], float] | None = None) -> float:
+    return measured_or_heuristic_loss(loss_table or {}, layer, rate)
 
 
 def row_to_features(active_cpus: list[int], util: dict[int, int], q_pct: int, cpus: list[int]) -> list[float]:
@@ -145,8 +147,16 @@ def build_profile(
     tx_base_ms: float,
     tx_per_layer_ms: float,
     end_per_layer_ms: float,
+    loss_table: dict[tuple[int, str], float] | None = None,
+    scheduler_min_speedup_vs_baseline: float = 1.0,
+    scheduler_max_speedup_vs_baseline: float = 0.0,
+    quality_first_no_svd: bool = False,
 ) -> dict[str, Any]:
-    sorted_cpus = sorted(cpus, key=lambda cpu: predictor.predict_ms([cpu], util, q_pct))
+    # Algorithmv2 assumes major cores are the lower-utilization cores and
+    # minor/tail cores are the higher-utilization cores.  The latency model is
+    # still useful as a tie-breaker among cores with similar utilization, but
+    # it must not invert the major/minor semantic.
+    sorted_cpus = sorted(cpus, key=lambda cpu: (util.get(cpu, 0), predictor.predict_ms([cpu], util, q_pct), cpu))
     full_base_ms = predictor.predict_ms(sorted_cpus, util, q_pct)
     full_local_ms = sum(layer_work_units(n_layers, layer) * full_base_ms for layer in range(n_layers))
     deadline_base_ms = reference_full_local_ms if reference_full_local_ms is not None else full_local_ms
@@ -174,7 +184,7 @@ def build_profile(
                         "rate": round(rate, 6),
                         "main_ms": round(main_ms, 6),
                         "tail_ms": round(tail_ms, 6),
-                        "loss": round(candidate_loss(layer, rate), 8),
+                        "loss": round(candidate_loss(layer, rate, loss_table), 8),
                         "weight": round(weight, 8),
                     }
                 )
@@ -205,6 +215,7 @@ def build_profile(
             "Current trained model was fit with fixed Q_pct=100 measurements.",
             "Q/rate scaling in this profile is therefore a linear approximation around the measured workload.",
         ],
+        "loss_source": "measured spectral residual norm" if loss_table else "heuristic placeholder",
         "n_layers": n_layers,
         "cpus": cpus,
         "utilization": {str(cpu): util[cpu] for cpu in cpus},
@@ -212,10 +223,14 @@ def build_profile(
         "sorted_cpus_by_model_single_core_latency": sorted_cpus,
         "model_pred_full_base_ms": round(full_base_ms, 6),
         "full_local_ms": round(full_local_ms, 6),
+        "baseline_no_svd_ms": round(full_local_ms, 6),
         "deadline_base_ms": round(deadline_base_ms, 6),
         "local_deadline_ms": round(local_deadline_ms, 6),
         "request_deadline_ms": round(request_deadline_ms, 6),
         "timeout_budget_ms": timeout_budget_ms,
+        "scheduler_min_speedup_vs_baseline": scheduler_min_speedup_vs_baseline,
+        "scheduler_max_speedup_vs_baseline": scheduler_max_speedup_vs_baseline,
+        "quality_first_no_svd": quality_first_no_svd,
         "tx_ms_by_split_m": tx_by_split,
         "end_ms_by_split_m": end_by_split,
         "core_splits": core_splits,
@@ -272,10 +287,15 @@ def main() -> int:
     parser.add_argument("--timeout-budget-ms", type=float, default=8.0)
     parser.add_argument("--request-deadline-factor", type=float, default=1.04)
     parser.add_argument("--local-deadline-factor", type=float, default=1.01)
+    parser.add_argument("--scheduler-min-speedup-vs-baseline", type=float, default=1.0)
+    parser.add_argument("--scheduler-max-speedup-vs-baseline", type=float, default=0.0)
+    parser.add_argument("--quality-first-no-svd", action="store_true")
     parser.add_argument("--reference-full-local-ms", type=float)
     parser.add_argument("--tx-base-ms", type=float, default=2.0)
     parser.add_argument("--tx-per-layer-ms", type=float, default=0.15)
     parser.add_argument("--end-per-layer-ms", type=float, default=1.0)
+    parser.add_argument("--loss-table", type=Path, help="CSV from measure_svd_matrix_loss.py, normally svd_loss_for_scheduler.csv")
+    parser.add_argument("--loss-reduction", choices=["sum", "mean", "max"], default="sum")
     parser.add_argument("--quantum-ms", type=float, default=0.01)
     parser.add_argument("--run-scheduler", action="store_true")
     parser.add_argument("--out-dir", type=Path, default=EXP_DIR / "results/model_profiles_20260429_r1")
@@ -284,6 +304,7 @@ def main() -> int:
     cpus = parse_cpu_list(args.cpus)
     rates = parse_rates(args.rates)
     predictor = LatencyPredictor(args.model)
+    loss_table = load_measured_loss_table(args.loss_table, args.loss_reduction)
     if sorted(cpus) != sorted(predictor.cpus):
         raise SystemExit(f"model CPUs {predictor.cpus} do not match requested CPUs {cpus}")
 
@@ -315,6 +336,10 @@ def main() -> int:
             tx_base_ms=args.tx_base_ms,
             tx_per_layer_ms=args.tx_per_layer_ms,
             end_per_layer_ms=args.end_per_layer_ms,
+            loss_table=loss_table,
+            scheduler_min_speedup_vs_baseline=args.scheduler_min_speedup_vs_baseline,
+            scheduler_max_speedup_vs_baseline=args.scheduler_max_speedup_vs_baseline,
+            quality_first_no_svd=args.quality_first_no_svd,
         )
         profile_path = args.out_dir / f"profile_{name}.json"
         save_json(profile_path, profile)
@@ -362,6 +387,8 @@ def main() -> int:
             "source_model": str(args.model),
             "q_pct": args.q_pct,
             "model_note": "Current model was trained at fixed Q; profile uses linear layer/rate scaling.",
+            "loss_table": str(args.loss_table) if args.loss_table else None,
+            "loss_source": "measured spectral residual norm" if loss_table else "heuristic placeholder",
             "profiles": index_rows,
         },
     )
@@ -412,6 +439,7 @@ def main() -> int:
         f"- rates: {args.rates}",
         f"- timeout_budget_ms: {args.timeout_budget_ms}",
         f"- idle reference deadline base: {idle_reference:.6f} ms",
+        f"- loss source: {'measured spectral residual norm' if loss_table else 'heuristic placeholder'}",
     ]
     if args.run_scheduler:
         lines.extend(

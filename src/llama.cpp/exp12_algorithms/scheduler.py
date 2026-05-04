@@ -48,6 +48,36 @@ class CoreSplitProfile:
     layers: tuple[LayerProfile, ...]
 
 
+@dataclass(frozen=True)
+class OffloadCandidate:
+    """End-to-end layer offload candidate.
+
+    `m` follows the exp6 layer-coop runtime convention:
+
+      PC    = [0, m)
+      Phone = [m, n_layers)
+
+    This is intentionally different from the older internal `split_m` field,
+    which represented the last PC layer index.
+    """
+
+    m: int
+    total_ms: float
+    pc_ms: float = 0.0
+    phone_ms: float = 0.0
+    network_ms: float = 0.0
+    source: str = ""
+
+
+@dataclass(frozen=True)
+class MajorOnlyCandidate:
+    p: int
+    major_cpus: tuple[int, ...]
+    minor_cpus: tuple[int, ...]
+    total_ms: float
+    source: str = ""
+
+
 @dataclass
 class LayerDecision:
     layer: int
@@ -99,8 +129,10 @@ class JointScheduleResult:
     feasible: bool
     split_m: int | None
     local: LocalScheduleResult | None
+    offload_m: int | None = None
     tx_ms: float = 0.0
     end_ms: float = 0.0
+    network_ms: float = 0.0
     total_ms: float = INF
     offloaded_layers: list[int] | None = None
     reason: str = ""
@@ -346,6 +378,53 @@ def _metric_series(meta: dict[str, Any], name: str, n_layers: int) -> list[float
     return series
 
 
+def _load_offload_candidates(meta: dict[str, Any], n_layers: int) -> list[OffloadCandidate]:
+    """Read real or modeled layer-coop candidates from profile metadata.
+
+    Preferred schema:
+
+      "offload_candidates": [
+        {
+          "m": 8,
+          "total_ms": 50.9,
+          "pc_ms": 12.4,
+          "phone_ms": 24.2,
+          "network_ms": 14.3,
+          "source": "layer_coop_sweep"
+        }
+      ]
+
+    Legacy `tx_ms_by_split_m/end_ms_by_split_m` arrays are deliberately not
+    returned here because they do not include the PC prefix compute time.  The
+    older modeled edge/end search below still uses them together with a prefix
+    DP, but they are not safe as direct no-SVD offload candidates.
+    """
+
+    candidates: list[OffloadCandidate] = []
+    for obj in meta.get("offload_candidates") or []:
+        try:
+            m = int(obj.get("m", obj.get("offload_m")))
+            total_ms = float(obj.get("total_ms", obj.get("steady_ms_per_token")))
+        except (TypeError, ValueError):
+            continue
+        if not math.isfinite(total_ms) or total_ms < 0.0:
+            continue
+        m = max(0, min(n_layers, m))
+        candidates.append(
+            OffloadCandidate(
+                m=m,
+                total_ms=total_ms,
+                pc_ms=float(obj.get("pc_ms", obj.get("prefix_ms", obj.get("prefix_decode_ms", 0.0))) or 0.0),
+                phone_ms=float(obj.get("phone_ms", obj.get("server_ms", obj.get("server_decode_ms", 0.0))) or 0.0),
+                network_ms=float(obj.get("network_ms", obj.get("network_wait_ms", 0.0)) or 0.0),
+                source=str(obj.get("source", "offload_candidates")),
+            )
+        )
+    if candidates:
+        return sorted(candidates, key=lambda item: item.m)
+    return []
+
+
 def _nonzero_rate_count(result: LocalScheduleResult | None) -> int:
     if result is None or not result.decisions:
         return 0
@@ -362,6 +441,366 @@ def _local_choice_key(result: LocalScheduleResult) -> tuple[float, int, int, flo
         -p,
         result.total_main_ms,
     )
+
+
+def _schedule_choice_key(result: JointScheduleResult, *, prefer_loss_within_ms: float = 0.0) -> tuple[float, float, int, int, float]:
+    """Global choice: minimize estimated latency, then preserve accuracy.
+
+    The old implementation made local/SVD win as soon as it was feasible.  The
+    Algorithmv2 decision point needs a real comparison: first compute the best
+    SVD/local plan, then compute the best layer-offload plan, then choose the
+    lower estimated end-to-end latency.  `prefer_loss_within_ms` can optionally
+    keep a lower-loss plan when two plans are practically tied.
+    """
+
+    local_loss = result.local.total_loss if result.local else 0.0
+    clipped = _nonzero_rate_count(result.local)
+    offloaded = len(result.offloaded_layers or [])
+    # Quantize the first objective only if an explicit tie band is requested.
+    if prefer_loss_within_ms > 0.0 and math.isfinite(result.total_ms):
+        latency_key = math.floor(result.total_ms / prefer_loss_within_ms)
+    else:
+        latency_key = result.total_ms
+    mode_penalty = 0 if result.mode in ("baseline_no_svd", "major_only_no_svd", "local") else 1
+    return (latency_key, local_loss, clipped, mode_penalty, float(offloaded))
+
+
+def _empty_local_result(
+    n_layers: int,
+    deadline_ms: float,
+    *,
+    split_id: str = "phone_full",
+) -> LocalScheduleResult:
+    decisions = [
+        LayerDecision(
+            layer=layer,
+            rate=0.0,
+            main_ms=0.0,
+            loss=0.0,
+            weight=0.0,
+        )
+        for layer in range(n_layers)
+    ]
+    return LocalScheduleResult(
+        feasible=True,
+        deadline_ms=deadline_ms,
+        split_id=split_id,
+        p=0,
+        major_cpus=[],
+        minor_cpus=[],
+        total_main_ms=0.0,
+        total_loss=0.0,
+        decisions=decisions,
+    )
+
+
+def _baseline_ms_from_meta(meta: dict[str, Any], layers_or_n: int | Iterable[LayerProfile]) -> float:
+    for key in ("baseline_no_svd_ms", "baseline_ms", "full_local_ms", "deadline_base_ms", "model_pred_full_base_ms"):
+        value = meta.get(key)
+        if value is None:
+            continue
+        try:
+            ms = float(value)
+        except (TypeError, ValueError):
+            continue
+        if math.isfinite(ms) and ms > 0.0:
+            return ms
+
+    if isinstance(layers_or_n, int):
+        return INF
+    total = 0.0
+    found = False
+    for layer in layers_or_n:
+        zero = [candidate.main_ms for candidate in layer.candidates if candidate.rate <= 0.0]
+        if not zero:
+            return INF
+        total += min(zero)
+        found = True
+    return total if found and total > 0.0 else INF
+
+
+def _make_baseline_result(
+    n_layers: int,
+    baseline_ms: float,
+    request_deadline_ms: float,
+) -> JointScheduleResult | None:
+    if not math.isfinite(baseline_ms) or baseline_ms <= 0.0:
+        return None
+    local = _empty_local_result(n_layers, request_deadline_ms, split_id="baseline_no_svd")
+    local.total_main_ms = baseline_ms
+    return JointScheduleResult(
+        mode="baseline_no_svd",
+        feasible=True,
+        split_m=n_layers - 1,
+        offload_m=n_layers,
+        local=local,
+        total_ms=baseline_ms,
+        offloaded_layers=[],
+        reason="baseline guard",
+    )
+
+
+def _make_major_only_result(
+    split: CoreSplitProfile,
+    n_layers: int,
+    request_deadline_ms: float,
+) -> JointScheduleResult | None:
+    """Run the full no-SVD model only on the low-utilization major cores.
+
+    This candidate is different from local SVD: it uses no truncation, no
+    minor/tail work, and therefore has zero quality loss.  It exists because
+    under heterogeneous load, excluding highly loaded cores can be faster than
+    using all cores or trying to split SVD work across bad minor cores.
+    """
+
+    total_ms = 0.0
+    decisions: list[LayerDecision] = []
+    for layer in split.layers:
+        zero_candidates = [candidate for candidate in layer.candidates if candidate.rate <= 0.0]
+        if not zero_candidates:
+            return None
+        candidate = min(zero_candidates, key=lambda item: item.main_ms)
+        total_ms += candidate.main_ms
+        decisions.append(
+            LayerDecision(
+                layer=layer.layer,
+                rate=0.0,
+                main_ms=candidate.main_ms,
+                loss=0.0,
+                weight=0.0,
+                tail_ms=0.0,
+            )
+        )
+    local = LocalScheduleResult(
+        feasible=True,
+        deadline_ms=request_deadline_ms,
+        split_id=f"{split.split_id}_major_only_no_svd",
+        p=split.p,
+        major_cpus=list(split.major_cpus),
+        minor_cpus=list(split.minor_cpus),
+        total_main_ms=total_ms,
+        total_loss=0.0,
+        decisions=decisions,
+    )
+    return JointScheduleResult(
+        mode="major_only_no_svd",
+        feasible=True,
+        split_m=n_layers - 1,
+        offload_m=n_layers,
+        local=local,
+        total_ms=total_ms,
+        offloaded_layers=[],
+        reason="full no-SVD execution on major cores only",
+    )
+
+
+def _make_major_only_result_from_candidate(
+    candidate: MajorOnlyCandidate,
+    n_layers: int,
+    request_deadline_ms: float,
+) -> JointScheduleResult | None:
+    if not math.isfinite(candidate.total_ms) or candidate.total_ms <= 0.0:
+        return None
+    decisions = [
+        LayerDecision(layer=layer, rate=0.0, main_ms=candidate.total_ms / max(1, n_layers), loss=0.0, weight=0.0)
+        for layer in range(n_layers)
+    ]
+    local = LocalScheduleResult(
+        feasible=True,
+        deadline_ms=request_deadline_ms,
+        split_id=f"measured_major_only_p{candidate.p}",
+        p=candidate.p,
+        major_cpus=list(candidate.major_cpus),
+        minor_cpus=list(candidate.minor_cpus),
+        total_main_ms=candidate.total_ms,
+        total_loss=0.0,
+        decisions=decisions,
+    )
+    return JointScheduleResult(
+        mode="major_only_no_svd",
+        feasible=True,
+        split_m=n_layers - 1,
+        offload_m=n_layers,
+        local=local,
+        total_ms=candidate.total_ms,
+        offloaded_layers=[],
+        reason=candidate.source or "measured major-only candidate",
+    )
+
+
+def _load_major_only_candidates(meta: dict[str, Any]) -> list[MajorOnlyCandidate]:
+    candidates: list[MajorOnlyCandidate] = []
+    for obj in meta.get("major_only_candidates") or []:
+        try:
+            p = int(obj.get("p", obj.get("n_run_cpus")))
+            total_ms = float(obj.get("total_ms", obj.get("decode_ms", obj.get("generation_decode_ms"))))
+        except (TypeError, ValueError):
+            continue
+        if not math.isfinite(total_ms) or total_ms <= 0.0:
+            continue
+        candidates.append(
+            MajorOnlyCandidate(
+                p=p,
+                major_cpus=_parse_cpus(obj.get("major_cpus", obj.get("run_cpus"))),
+                minor_cpus=_parse_cpus(obj.get("minor_cpus", ())),
+                total_ms=total_ms,
+                source=str(obj.get("source", "major_only_candidates")),
+            )
+        )
+    return candidates
+
+
+def _best_major_only_candidate(
+    splits: Iterable[CoreSplitProfile],
+    n_layers: int,
+    request_deadline_ms: float,
+    meta: dict[str, Any] | None = None,
+) -> JointScheduleResult | None:
+    best: JointScheduleResult | None = None
+    best_key: tuple[float, float, int, int, float] | None = None
+    for candidate in _load_major_only_candidates(meta or {}):
+        result = _make_major_only_result_from_candidate(candidate, n_layers, request_deadline_ms)
+        if result is None:
+            continue
+        key = _schedule_choice_key(result)
+        if best_key is None or key < best_key:
+            best = result
+            best_key = key
+    for split in splits:
+        if not split.minor_cpus:
+            continue
+        result = _make_major_only_result(split, n_layers, request_deadline_ms)
+        if result is None:
+            continue
+        key = _schedule_choice_key(result)
+        if best_key is None or key < best_key:
+            best = result
+            best_key = key
+    return best
+
+
+def _speedup_vs_baseline(result: JointScheduleResult, baseline_ms: float) -> float:
+    if not math.isfinite(baseline_ms) or baseline_ms <= 0.0:
+        return 0.0
+    if not math.isfinite(result.total_ms) or result.total_ms <= 0.0:
+        return 0.0
+    return baseline_ms / result.total_ms
+
+
+def _select_with_baseline_guard(
+    choices: list[JointScheduleResult],
+    baseline: JointScheduleResult | None,
+    *,
+    min_speedup: float,
+    max_speedup: float = 0.0,
+) -> JointScheduleResult | None:
+    """Choose a schedule while guaranteeing a no-SVD fallback candidate.
+
+    Algorithmv2's DP finds the best local SVD solution under a deadline.  In
+    the real system that is not enough: the estimated model can be wrong, and
+    sometimes the best action is to do nothing.  This guard makes
+    `baseline_no_svd` an explicit candidate and only enables a non-baseline
+    plan when its estimated latency beats baseline by `min_speedup`.
+
+    When `max_speedup` is positive, candidates inside the requested speedup
+    band are preferred over overly aggressive SVD choices.  This is useful for
+    controlled experiments that target a 10%-20% gain instead of maximum
+    clipping.
+    """
+
+    if baseline is None:
+        return min(choices, key=_schedule_choice_key) if choices else None
+
+    baseline_ms = baseline.total_ms
+    min_speedup = max(1.0, float(min_speedup))
+    max_speedup = max(0.0, float(max_speedup))
+
+    lossless_no_svd_choices: list[tuple[tuple[float, float, int, int], JointScheduleResult]] = []
+    for result in choices:
+        if result.mode not in ("major_only_no_svd", "edge_end_no_svd"):
+            continue
+        speedup = _speedup_vs_baseline(result, baseline_ms)
+        if speedup > 1.0 + 1e-12:
+            p = result.local.p if result.local and result.local.p is not None else 0
+            # no-SVD candidates have no PPL loss.  Pick the fastest lossless
+            # route first, whether it is major-only local execution or
+            # layer-level phone offload.  This preserves the user's intended
+            # major-only-before-SVD rule without accidentally hiding a faster
+            # no-SVD offload candidate.
+            mode_rank = 0 if result.mode == "major_only_no_svd" else 1
+            lossless_no_svd_choices.append(((-speedup, result.total_ms, mode_rank, p), result))
+    if lossless_no_svd_choices:
+        return min(lossless_no_svd_choices, key=lambda item: item[0])[1]
+
+    eligible: list[tuple[tuple[float, float, float, float, int, int], JointScheduleResult]] = []
+    fallback: list[tuple[tuple[float, float, int, int, float], JointScheduleResult]] = []
+
+    for result in choices:
+        if result.mode == "baseline_no_svd":
+            continue
+        speedup = _speedup_vs_baseline(result, baseline_ms)
+        if speedup + 1e-12 < min_speedup:
+            continue
+        local_loss = result.local.total_loss if result.local else 0.0
+        clipped = _nonzero_rate_count(result.local)
+        if max_speedup > 0.0 and speedup <= max_speedup + 1e-12:
+            center = (min_speedup + max_speedup) / 2.0
+            eligible.append(((local_loss, clipped, abs(speedup - center), result.total_ms, -speedup, 0), result))
+        else:
+            fallback.append((_schedule_choice_key(result), result))
+
+    if eligible:
+        return min(eligible, key=lambda item: item[0])[1]
+    if fallback and max_speedup <= 0.0:
+        return min(fallback, key=lambda item: item[0])[1]
+    if fallback and max_speedup > 0.0:
+        # No in-band candidate exists. Prefer a small overshoot over falling
+        # back to baseline only when it still satisfies the lower guard.
+        return min(fallback, key=lambda item: (_speedup_vs_baseline(item[1], baseline_ms) - max_speedup, item[0]))[1]
+    return baseline
+
+
+def _make_offload_result(
+    candidate: OffloadCandidate,
+    n_layers: int,
+    request_deadline_ms: float,
+) -> JointScheduleResult | None:
+    if candidate.total_ms > request_deadline_ms + 1e-9:
+        return None
+    m = max(0, min(n_layers, candidate.m))
+    old_split_m = m - 1 if m > 0 else None
+    local = _empty_local_result(n_layers, request_deadline_ms, split_id=f"offload_m{m}")
+    return JointScheduleResult(
+        mode="edge_end_no_svd",
+        feasible=True,
+        split_m=old_split_m,
+        offload_m=m,
+        local=local,
+        tx_ms=candidate.network_ms,
+        end_ms=candidate.phone_ms,
+        network_ms=candidate.network_ms,
+        total_ms=candidate.total_ms,
+        offloaded_layers=list(range(m, n_layers)),
+        reason=candidate.source,
+    )
+
+
+def _best_offload_candidate(
+    meta: dict[str, Any],
+    n_layers: int,
+    request_deadline_ms: float,
+) -> JointScheduleResult | None:
+    best: JointScheduleResult | None = None
+    best_key: tuple[float, float, int, int, float] | None = None
+    for candidate in _load_offload_candidates(meta, n_layers):
+        result = _make_offload_result(candidate, n_layers, request_deadline_ms)
+        if result is None:
+            continue
+        key = _schedule_choice_key(result)
+        if best_key is None or key < best_key:
+            best_key = key
+            best = result
+    return best
 
 
 def solve_local_dp_over_splits(
@@ -402,23 +841,51 @@ def solve_joint_schedule(
     quantum_ms: float = 1.0,
     meta: dict[str, Any] | None = None,
 ) -> JointScheduleResult:
-    """Solve chapter 5.4 flow: local DP first, then suffix offload search."""
+    """Solve chapter 5.4 flow and compare local SVD with layer offload."""
 
     meta = meta or {}
     local = solve_local_dp(layers, local_deadline_ms, timeout_budget_ms, quantum_ms)
     n_layers = len(layers)
+    choices: list[JointScheduleResult] = []
+    baseline = _make_baseline_result(
+        n_layers,
+        baseline_ms=_baseline_ms_from_meta(meta, layers),
+        request_deadline_ms=request_deadline_ms,
+    )
+    if baseline is not None:
+        choices.append(baseline)
     if local.feasible:
-        return JointScheduleResult(
-            mode="local",
-            feasible=True,
-            split_m=n_layers - 1,
-            local=local,
-            total_ms=local.total_main_ms,
-            offloaded_layers=[],
+        if not bool(meta.get("quality_first_no_svd", False)):
+            choices.append(
+                JointScheduleResult(
+                    mode="local",
+                    feasible=True,
+                    split_m=n_layers - 1,
+                    offload_m=n_layers,
+                    local=local,
+                    total_ms=local.total_main_ms,
+                    offloaded_layers=[],
+                )
+            )
+
+    offload = _best_offload_candidate(meta, n_layers, request_deadline_ms)
+    if offload is not None:
+        choices.append(offload)
+
+    if choices:
+        selected = _select_with_baseline_guard(
+            choices,
+            baseline,
+            min_speedup=float(meta.get("scheduler_min_speedup_vs_baseline", meta.get("min_speedup_vs_baseline", 1.0))),
+            max_speedup=float(meta.get("scheduler_max_speedup_vs_baseline", meta.get("max_speedup_vs_baseline", 0.0))),
         )
+        if selected is not None:
+            return selected
 
     tx_series = _metric_series(meta, "tx_ms_by_split_m", n_layers)
     end_series = _metric_series(meta, "end_ms_by_split_m", n_layers)
+    best: JointScheduleResult | None = None
+    best_key: tuple[float, float, int, int, float] | None = None
 
     for split_m in range(n_layers - 1, -1, -1):
         tx_ms = tx_series[split_m]
@@ -432,16 +899,25 @@ def solve_joint_schedule(
             continue
         total_ms = edge.total_main_ms + tx_ms + end_ms
         if total_ms <= request_deadline_ms + 1e-9:
-            return JointScheduleResult(
+            result = JointScheduleResult(
                 mode="edge_end",
                 feasible=True,
                 split_m=split_m,
+                offload_m=split_m + 1,
                 local=edge,
                 tx_ms=tx_ms,
                 end_ms=end_ms,
+                network_ms=tx_ms,
                 total_ms=total_ms,
                 offloaded_layers=list(range(split_m + 1, n_layers)),
             )
+            key = _schedule_choice_key(result)
+            if best_key is None or key < best_key:
+                best_key = key
+                best = result
+
+    if best is not None:
+        return best
 
     return JointScheduleResult(
         mode="none",
@@ -462,12 +938,11 @@ def solve_joint_schedule_over_splits(
 ) -> JointScheduleResult:
     """Solve Algorithmv2 5.2 with outer core-split enumeration.
 
-    The choice is lexicographic:
-    1. prefer any feasible local-only plan over offload;
-    2. among local plans, minimize loss, then clipping count, then prefer
-       larger p, then lower main time;
-    3. if local is infeasible, choose the suffix offload plan with the fewest
-       offloaded layers, then lower loss, then lower total time.
+    The scheduler now follows the intended final decision:
+    1. compute the best local SVD/no-SVD DP solution over all core splits;
+    2. compute the best layer-offload/no-SVD solution for the current hardware;
+    3. choose the lower estimated end-to-end latency, using loss only as a
+       tie-breaker.
     """
 
     meta = meta or {}
@@ -487,15 +962,45 @@ def solve_joint_schedule_over_splits(
         quantum_ms=quantum_ms,
     )
     n_layers = len(splits[0].layers)
+    choices: list[JointScheduleResult] = []
+    baseline = _make_baseline_result(
+        n_layers,
+        baseline_ms=_baseline_ms_from_meta(meta, n_layers),
+        request_deadline_ms=request_deadline_ms,
+    )
+    if baseline is not None:
+        choices.append(baseline)
     if local.feasible:
-        return JointScheduleResult(
-            mode="local",
-            feasible=True,
-            split_m=n_layers - 1,
-            local=local,
-            total_ms=local.total_main_ms,
-            offloaded_layers=[],
+        if not bool(meta.get("quality_first_no_svd", False)):
+            choices.append(
+                JointScheduleResult(
+                    mode="local",
+                    feasible=True,
+                    split_m=n_layers - 1,
+                    offload_m=n_layers,
+                    local=local,
+                    total_ms=local.total_main_ms,
+                    offloaded_layers=[],
+                )
+            )
+
+    major_only = _best_major_only_candidate(splits, n_layers, request_deadline_ms, meta)
+    if major_only is not None:
+        choices.append(major_only)
+
+    offload = _best_offload_candidate(meta, n_layers, request_deadline_ms)
+    if offload is not None:
+        choices.append(offload)
+
+    if choices:
+        selected = _select_with_baseline_guard(
+            choices,
+            baseline,
+            min_speedup=float(meta.get("scheduler_min_speedup_vs_baseline", meta.get("min_speedup_vs_baseline", 1.0))),
+            max_speedup=float(meta.get("scheduler_max_speedup_vs_baseline", meta.get("max_speedup_vs_baseline", 0.0))),
         )
+        if selected is not None:
+            return selected
 
     tx_series = _metric_series(meta, "tx_ms_by_split_m", n_layers)
     end_series = _metric_series(meta, "end_ms_by_split_m", n_layers)
@@ -538,9 +1043,11 @@ def solve_joint_schedule_over_splits(
                 mode="edge_end",
                 feasible=True,
                 split_m=split_m,
+                offload_m=split_m + 1,
                 local=edge,
                 tx_ms=tx_ms,
                 end_ms=end_ms,
+                network_ms=tx_ms,
                 total_ms=total_ms,
                 offloaded_layers=list(range(split_m + 1, n_layers)),
             )

@@ -1,0 +1,343 @@
+{
+  "mode": "local",
+  "feasible": true,
+  "split_m": 27,
+  "local": {
+    "feasible": true,
+    "deadline_ms": 57.413753,
+    "split_id": "model_p3_major_60_61_62",
+    "p": 3,
+    "major_cpus": [
+      62,
+      61,
+      60
+    ],
+    "minor_cpus": [
+      63
+    ],
+    "total_main_ms": 57.232575000000004,
+    "total_loss": 1.8919000000000001,
+    "decisions": [
+      {
+        "layer": 0,
+        "rate": 0.0,
+        "main_ms": 2.175392,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 1,
+        "rate": 0.3,
+        "main_ms": 1.661208,
+        "loss": 0.09135,
+        "weight": 1.67236822,
+        "tail_ms": 1.672368,
+        "timeout_ms": 1.188118810333693
+      },
+      {
+        "layer": 2,
+        "rate": 0.0,
+        "main_ms": 2.570917,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 3,
+        "rate": 0.5,
+        "main_ms": 1.38434,
+        "loss": 0.26125,
+        "weight": 3.2518271,
+        "tail_ms": 3.251827,
+        "timeout_ms": 2.3102310240401858
+      },
+      {
+        "layer": 4,
+        "rate": 0.0,
+        "main_ms": 2.175392,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 5,
+        "rate": 0.3,
+        "main_ms": 1.661208,
+        "loss": 0.09675,
+        "weight": 1.67236822,
+        "tail_ms": 1.672368,
+        "timeout_ms": 1.188118810333693
+      },
+      {
+        "layer": 6,
+        "rate": 0.0,
+        "main_ms": 2.570917,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 7,
+        "rate": 0.4,
+        "main_ms": 1.661208,
+        "loss": 0.1768,
+        "weight": 2.60146168,
+        "tail_ms": 2.601462,
+        "timeout_ms": 1.8481848192321488
+      },
+      {
+        "layer": 8,
+        "rate": 0.0,
+        "main_ms": 2.175392,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 9,
+        "rate": 0.3,
+        "main_ms": 1.661208,
+        "loss": 0.10215,
+        "weight": 1.67236822,
+        "tail_ms": 1.672368,
+        "timeout_ms": 1.188118810333693
+      },
+      {
+        "layer": 10,
+        "rate": 0.0,
+        "main_ms": 2.570917,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 11,
+        "rate": 0.4,
+        "main_ms": 1.661208,
+        "loss": 0.1864,
+        "weight": 2.60146168,
+        "tail_ms": 2.601462,
+        "timeout_ms": 1.8481848192321488
+      },
+      {
+        "layer": 12,
+        "rate": 0.0,
+        "main_ms": 2.175392,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 13,
+        "rate": 0.3,
+        "main_ms": 1.661208,
+        "loss": 0.10755,
+        "weight": 1.67236822,
+        "tail_ms": 1.672368,
+        "timeout_ms": 1.188118810333693
+      },
+      {
+        "layer": 14,
+        "rate": 0.0,
+        "main_ms": 2.570917,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 15,
+        "rate": 0.4,
+        "main_ms": 1.661208,
+        "loss": 0.196,
+        "weight": 2.60146168,
+        "tail_ms": 2.601462,
+        "timeout_ms": 1.8481848192321488
+      },
+      {
+        "layer": 16,
+        "rate": 0.0,
+        "main_ms": 2.175392,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 17,
+        "rate": 0.3,
+        "main_ms": 1.661208,
+        "loss": 0.11295,
+        "weight": 1.67236822,
+        "tail_ms": 1.672368,
+        "timeout_ms": 1.188118810333693
+      },
+      {
+        "layer": 18,
+        "rate": 0.0,
+        "main_ms": 2.570917,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 19,
+        "rate": 0.4,
+        "main_ms": 1.661208,
+        "loss": 0.2056,
+        "weight": 2.60146168,
+        "tail_ms": 2.601462,
+        "timeout_ms": 1.8481848192321488
+      },
+      {
+        "layer": 20,
+        "rate": 0.0,
+        "main_ms": 2.175392,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 21,
+        "rate": 0.2,
+        "main_ms": 1.898524,
+        "loss": 0.0526,
+        "weight": 1.11491215,
+        "tail_ms": 1.114912,
+        "timeout_ms": 0.7920792092572652
+      },
+      {
+        "layer": 22,
+        "rate": 0.0,
+        "main_ms": 2.570917,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 23,
+        "rate": 0.3,
+        "main_ms": 1.938076,
+        "loss": 0.12105,
+        "weight": 1.95109626,
+        "tail_ms": 1.951096,
+        "timeout_ms": 1.3861386144241117
+      },
+      {
+        "layer": 24,
+        "rate": 0.0,
+        "main_ms": 2.175392,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 25,
+        "rate": 0.2,
+        "main_ms": 1.898524,
+        "loss": 0.055,
+        "weight": 1.11491215,
+        "tail_ms": 1.114912,
+        "timeout_ms": 0.7920792092572652
+      },
+      {
+        "layer": 26,
+        "rate": 0.0,
+        "main_ms": 2.570917,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 27,
+        "rate": 0.3,
+        "main_ms": 1.938076,
+        "loss": 0.12645,
+        "weight": 1.95109626,
+        "tail_ms": 1.951096,
+        "timeout_ms": 1.3861386144241117
+      }
+    ],
+    "reason": ""
+  },
+  "offload_m": 28,
+  "tx_ms": 0.0,
+  "end_ms": 0.0,
+  "network_ms": 0.0,
+  "total_ms": 57.232575000000004,
+  "offloaded_layers": [],
+  "reason": "",
+  "rates": [
+    0.0,
+    0.3,
+    0.0,
+    0.5,
+    0.0,
+    0.3,
+    0.0,
+    0.4,
+    0.0,
+    0.3,
+    0.0,
+    0.4,
+    0.0,
+    0.3,
+    0.0,
+    0.4,
+    0.0,
+    0.3,
+    0.0,
+    0.4,
+    0.0,
+    0.2,
+    0.0,
+    0.3,
+    0.0,
+    0.2,
+    0.0,
+    0.3
+  ],
+  "timeouts_ms": [
+    0.0,
+    1.188118810333693,
+    0.0,
+    2.3102310240401858,
+    0.0,
+    1.188118810333693,
+    0.0,
+    1.8481848192321488,
+    0.0,
+    1.188118810333693,
+    0.0,
+    1.8481848192321488,
+    0.0,
+    1.188118810333693,
+    0.0,
+    1.8481848192321488,
+    0.0,
+    1.188118810333693,
+    0.0,
+    1.8481848192321488,
+    0.0,
+    0.7920792092572652,
+    0.0,
+    1.3861386144241117,
+    0.0,
+    0.7920792092572652,
+    0.0,
+    1.3861386144241117
+  ]
+}

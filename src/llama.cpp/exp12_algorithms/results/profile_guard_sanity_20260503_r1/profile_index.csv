@@ -1,0 +1,5 @@
+scenario,profile,full_local_ms,local_deadline_ms,request_deadline_ms,utilization
+load_0,src/llama.cpp/exp12_algorithms/results/profile_guard_sanity_20260503_r1/profile_load_0.json,32.0358,32.356158,33.317232,"60:0,61:0,62:0,63:0,64:0,65:0,66:0,67:0"
+load_50,src/llama.cpp/exp12_algorithms/results/profile_guard_sanity_20260503_r1/profile_load_50.json,31.8804,32.356158,33.317232,"60:50,61:50,62:50,63:50,64:50,65:50,66:50,67:50"
+load_80,src/llama.cpp/exp12_algorithms/results/profile_guard_sanity_20260503_r1/profile_load_80.json,32.4744,32.356158,33.317232,"60:80,61:80,62:80,63:80,64:80,65:80,66:80,67:80"
+load_100,src/llama.cpp/exp12_algorithms/results/profile_guard_sanity_20260503_r1/profile_load_100.json,37.0624,32.356158,33.317232,"60:100,61:100,62:100,63:100,64:100,65:100,66:100,67:100"

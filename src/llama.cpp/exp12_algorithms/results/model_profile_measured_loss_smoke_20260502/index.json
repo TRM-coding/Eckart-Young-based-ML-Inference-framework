@@ -1,0 +1,17 @@
+{
+  "source_model": "/home/tianruiming/CE_ADA_LLAMA/src/llama.cpp/exp12_algorithms/results/latency_model_20260429_r1/best_model.pkl",
+  "q_pct": 100,
+  "model_note": "Current model was trained at fixed Q; profile uses linear layer/rate scaling.",
+  "loss_table": "src/llama.cpp/exp12_algorithms/results/svd_matrix_loss_qwen_f16_20260502_r1/svd_loss_for_scheduler.csv",
+  "loss_source": "measured spectral residual norm",
+  "profiles": [
+    {
+      "scenario": "load_50",
+      "profile": "src/llama.cpp/exp12_algorithms/results/model_profile_measured_loss_smoke_20260502/profile_load_50.json",
+      "full_local_ms": 31.8804,
+      "local_deadline_ms": 32.356158,
+      "request_deadline_ms": 33.317232,
+      "utilization": "60:50,61:50,62:50,63:50,64:50,65:50,66:50,67:50"
+    }
+  ]
+}

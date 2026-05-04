@@ -1,0 +1,11 @@
+{
+  "2c_balanced_mid": "all_0.5",
+  "2c_asym_low_high": "trunc_even_0.8",
+  "2c_idle_saturated": "trunc_even_0.85",
+  "2c_high": "trunc_even_0.85",
+  "4c_gradient": "all_0.35",
+  "4c_balanced_high": "all_0.4",
+  "4c_front_hot": "trunc_even_0.8",
+  "4c_high": "all_0.6",
+  "8c_high": "trunc_even_0.8"
+}

@@ -5,7 +5,10 @@
 #include "layer_threadpool.h"
 
 #include <algorithm>
+#include <atomic>
 #include <chrono>
+#include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <memory>
@@ -35,8 +38,34 @@ struct LayerCoopClientProfile {
     double roundtrip_ms = 0.0;
 };
 
+static bool env_enabled(const char * name, bool default_value) {
+    const char * value = std::getenv(name);
+    if (!value || !value[0]) {
+        return default_value;
+    }
+    return std::atoi(value) != 0;
+}
+
+static std::thread start_keep_hot_thread(std::atomic<bool> & active, std::atomic<bool> & stop) {
+    return std::thread([&active, &stop]() {
+        volatile uint64_t x = 0x9e3779b97f4a7c15ULL;
+        while (!stop.load(std::memory_order_relaxed)) {
+            if (active.load(std::memory_order_relaxed)) {
+                for (int i = 0; i < 200000; ++i) {
+                    x ^= x << 7;
+                    x ^= x >> 9;
+                    x += 0x9e3779b97f4a7c15ULL;
+                }
+            } else {
+                std::this_thread::sleep_for(std::chrono::microseconds(200));
+            }
+        }
+    });
+}
+
 static llama_token send_hidden(int fd, const std::vector<int32_t> & pos, const float * hidden,
-        int32_t n_embd, int32_t n_vocab, bool reset_kv, double & server_ms, LayerCoopClientProfile & profile) {
+        int32_t n_embd, int32_t n_vocab, bool reset_kv, double & server_ms, LayerCoopClientProfile & profile,
+        std::atomic<bool> * keep_hot_active = nullptr) {
     LayerCoopRequest req {
         LAYER_COOP_MAGIC,
         LAYER_COOP_VERSION,
@@ -57,6 +86,9 @@ static llama_token send_hidden(int fd, const std::vector<int32_t> & pos, const f
     }
     const auto t_send_done = std::chrono::steady_clock::now();
     LayerCoopResponse resp {};
+    if (keep_hot_active) {
+        keep_hot_active->store(true, std::memory_order_relaxed);
+    }
     if (!layer_coop_recv_all(fd, &resp, sizeof(resp)) ||
             resp.magic != LAYER_COOP_MAGIC ||
             resp.version != LAYER_COOP_VERSION ||
@@ -64,7 +96,13 @@ static llama_token send_hidden(int fd, const std::vector<int32_t> & pos, const f
             resp.n_logits != 0 ||
             resp.selected_token < 0 ||
             resp.selected_token >= n_vocab) {
+        if (keep_hot_active) {
+            keep_hot_active->store(false, std::memory_order_relaxed);
+        }
         throw std::runtime_error("bad layer-coop response");
+    }
+    if (keep_hot_active) {
+        keep_hot_active->store(false, std::memory_order_relaxed);
     }
     const auto t_header_done = std::chrono::steady_clock::now();
 
@@ -202,6 +240,20 @@ int main(int argc, char ** argv) {
     double pc_prefill_ms = 0.0;
     double prefix_decode_ms = 0.0;
     LayerCoopClientProfile coop_profile;
+    std::atomic<bool> keep_hot_active(false);
+    std::atomic<bool> keep_hot_stop(false);
+    std::thread keep_hot_thread;
+    if (env_enabled("LAYER_COOP_CLIENT_KEEP_HOT", false)) {
+        keep_hot_thread = start_keep_hot_thread(keep_hot_active, keep_hot_stop);
+        std::cerr << "[layer-coop-client] keep-hot enabled while waiting for server response\n";
+    }
+    auto stop_keep_hot = [&]() {
+        keep_hot_active.store(false, std::memory_order_relaxed);
+        keep_hot_stop.store(true, std::memory_order_relaxed);
+        if (keep_hot_thread.joinable()) {
+            keep_hot_thread.join();
+        }
+    };
     const auto t_all0 = std::chrono::steady_clock::now();
 
     llama_kv_cache_clear(full_ctx.get());
@@ -262,6 +314,7 @@ int main(int argc, char ** argv) {
     std::vector<llama_token> generated;
     generated.reserve(max_new_tokens);
     int32_t total_tokens = n_tokens;
+    const auto t_steady0 = std::chrono::steady_clock::now();
     for (int32_t gen = 0; gen < max_new_tokens; ++gen) {
         const llama_token next = next_token;
         generated.push_back(next);
@@ -294,11 +347,14 @@ int main(int argc, char ** argv) {
             return 1;
         }
         int32_t p = total_tokens;
-        next_token = send_hidden(fd, std::vector<int32_t>{p}, hidden, n_embd, n_vocab, gen == 0, server_ms, coop_profile);
+        next_token = send_hidden(fd, std::vector<int32_t>{p}, hidden, n_embd, n_vocab, gen == 0, server_ms, coop_profile,
+                keep_hot_thread.joinable() ? &keep_hot_active : nullptr);
         total_tokens++;
     }
+    const auto t_steady1 = std::chrono::steady_clock::now();
     const auto t_all1 = std::chrono::steady_clock::now();
     layer_coop_close(fd);
+    stop_keep_hot();
 
     std::string text;
     for (llama_token tok : generated) {
@@ -307,6 +363,8 @@ int main(int argc, char ** argv) {
         text += len > 0 ? std::string(buf, buf + len) : "[ERR]";
     }
     const double total_ms = std::chrono::duration<double, std::milli>(t_all1 - t_all0).count();
+    const double steady_decode_ms = std::chrono::duration<double, std::milli>(t_steady1 - t_steady0).count();
+    const double generated_count = (double) generated.size();
     std::cout << "Generated text: " << text << std::endl;
     std::cout << "[layer-coop-client] generated=" << generated.size()
               << " pc_prefill_ms=" << pc_prefill_ms
@@ -315,6 +373,15 @@ int main(int argc, char ** argv) {
               << " total_ms=" << total_ms
               << " throughput=" << (generated.empty() ? 0.0 : generated.size() / (total_ms / 1000.0))
               << " tok/s" << std::endl;
+    std::cout << "[layer-coop-steady] generated=" << generated.size()
+              << " steady_decode_ms=" << steady_decode_ms
+              << " steady_throughput=" << (generated.empty() ? 0.0 : generated_count / (steady_decode_ms / 1000.0))
+              << " tok/s"
+              << " steady_ms_per_token=" << (generated.empty() ? 0.0 : steady_decode_ms / generated_count)
+              << " prefix_decode_ms=" << prefix_decode_ms
+              << " server_decode_ms=" << server_ms
+              << " network_wait_ms=" << (coop_profile.roundtrip_ms - server_ms)
+              << std::endl;
     std::cout << "[layer-coop-profile] requests=" << coop_profile.requests
               << " send_bytes=" << coop_profile.send_bytes
               << " recv_bytes=" << coop_profile.recv_bytes

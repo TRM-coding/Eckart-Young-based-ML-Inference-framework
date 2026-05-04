@@ -1,0 +1,2 @@
+scenario,hot_cpus,workers_per_hot,method,runs,baseline_mean_tok_s,selected_policy,selected_detail,selected_mean_tok_s,speedup_vs_baseline
+4hot_matrix_1w,"60,61,62,63",1,matrixprod,2,7.787681999999999,major_only_no_svd,"p=6;major=64,65,66,67,60,61",20.352355,2.613403449190658

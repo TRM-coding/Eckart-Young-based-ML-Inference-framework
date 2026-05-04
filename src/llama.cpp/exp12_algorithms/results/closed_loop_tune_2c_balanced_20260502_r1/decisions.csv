@@ -1,0 +1,2 @@
+scenario,n_cores,cpus,loads,calibration_baseline_tok_s,calibration_best_policy,calibration_best_tok_s,calibration_best_speedup,selected_policy,validation_baseline_tok_s,validation_scheduler_tok_s,validation_speedup
+2c_balanced_mid,2,"60,61","50,50",11.49755,trunc_even_0.8,13.204,1.1484185761314367,trunc_even_0.8,11.4893,12.2154,1.063197931988894

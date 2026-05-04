@@ -1,0 +1,5 @@
+scenario,n_cores,cpus,loads,runs,selected_policies,baseline_tok_s_median,scheduler_tok_s_median,speedup_median,speedup_min,speedup_max,in_band_runs,fallback_runs
+2c_asym_low_high,2,"60,61","20,80",5,"all_0.2,all_0.4,trunc_even_0.8",9.79053,11.1852,1.1502174902062503,1.1030269572101161,1.1523551394193257,5,0
+2c_balanced_mid,2,"60,61","50,50",5,"all_0.25,all_0.3,all_0.35,trunc_even_0.85",9.53302,10.9822,1.1520168844710281,1.1224145345087078,1.1668890252115982,5,0
+2c_high,2,"60,61","80,100",5,"all_0.3,all_0.4,all_0.45,trunc_even_0.85",11.533,13.3076,1.1552691536028836,1.15242706545722,1.156482508439954,5,0
+2c_idle_saturated,2,"60,61","0,100",5,"all_0.2,all_0.3,all_0.35",10.9878,12.6628,1.1453618545692537,1.14282006005918,1.1524417990862594,5,0

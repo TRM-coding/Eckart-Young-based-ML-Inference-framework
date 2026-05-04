@@ -1,0 +1,347 @@
+{
+  "mode": "local",
+  "feasible": true,
+  "split_m": 27,
+  "local": {
+    "feasible": true,
+    "deadline_ms": 32.356158,
+    "split_id": "model_p6_major_61_62_63_64_65_66",
+    "p": 6,
+    "major_cpus": [
+      63,
+      62,
+      61,
+      64,
+      65,
+      66
+    ],
+    "minor_cpus": [
+      67,
+      60
+    ],
+    "total_main_ms": 32.24377,
+    "total_loss": 10.57345,
+    "decisions": [
+      {
+        "layer": 0,
+        "rate": 0.0,
+        "main_ms": 1.726784,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 1,
+        "rate": 0.9,
+        "main_ms": 0.188376,
+        "loss": 0.82215,
+        "weight": 3.33578456,
+        "tail_ms": 3.335785,
+        "timeout_ms": 1.4937759329782023
+      },
+      {
+        "layer": 2,
+        "rate": 0.0,
+        "main_ms": 2.040745,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 3,
+        "rate": 0.9,
+        "main_ms": 0.219773,
+        "loss": 0.84645,
+        "weight": 3.89174866,
+        "tail_ms": 3.891749,
+        "timeout_ms": 1.7427385914599263
+      },
+      {
+        "layer": 4,
+        "rate": 0.0,
+        "main_ms": 1.726784,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 5,
+        "rate": 0.8,
+        "main_ms": 0.376753,
+        "loss": 0.688,
+        "weight": 2.96514183,
+        "tail_ms": 2.965142,
+        "timeout_ms": 1.3278008288163983
+      },
+      {
+        "layer": 6,
+        "rate": 0.0,
+        "main_ms": 2.040745,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 7,
+        "rate": 0.9,
+        "main_ms": 0.219773,
+        "loss": 0.89505,
+        "weight": 3.89174866,
+        "tail_ms": 3.891749,
+        "timeout_ms": 1.7427385914599263
+      },
+      {
+        "layer": 8,
+        "rate": 0.0,
+        "main_ms": 1.726784,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 9,
+        "rate": 0.8,
+        "main_ms": 0.376753,
+        "loss": 0.7264,
+        "weight": 2.96514183,
+        "tail_ms": 2.965142,
+        "timeout_ms": 1.3278008288163983
+      },
+      {
+        "layer": 10,
+        "rate": 0.0,
+        "main_ms": 2.040745,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 11,
+        "rate": 0.9,
+        "main_ms": 0.219773,
+        "loss": 0.94365,
+        "weight": 3.89174866,
+        "tail_ms": 3.891749,
+        "timeout_ms": 1.7427385914599263
+      },
+      {
+        "layer": 12,
+        "rate": 0.0,
+        "main_ms": 1.726784,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 13,
+        "rate": 0.8,
+        "main_ms": 0.376753,
+        "loss": 0.7648,
+        "weight": 2.96514183,
+        "tail_ms": 2.965142,
+        "timeout_ms": 1.3278008288163983
+      },
+      {
+        "layer": 14,
+        "rate": 0.0,
+        "main_ms": 2.040745,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 15,
+        "rate": 0.8,
+        "main_ms": 0.439545,
+        "loss": 0.784,
+        "weight": 3.45933214,
+        "tail_ms": 3.459332,
+        "timeout_ms": 1.549100969191482
+      },
+      {
+        "layer": 16,
+        "rate": 0.0,
+        "main_ms": 1.726784,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 17,
+        "rate": 0.7,
+        "main_ms": 0.565129,
+        "loss": 0.61495,
+        "weight": 2.5944991,
+        "tail_ms": 2.594499,
+        "timeout_ms": 1.1618257246545942
+      },
+      {
+        "layer": 18,
+        "rate": 0.0,
+        "main_ms": 2.040745,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 19,
+        "rate": 0.8,
+        "main_ms": 0.439545,
+        "loss": 0.8224,
+        "weight": 3.45933214,
+        "tail_ms": 3.459332,
+        "timeout_ms": 1.549100969191482
+      },
+      {
+        "layer": 20,
+        "rate": 0.0,
+        "main_ms": 1.726784,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 21,
+        "rate": 0.7,
+        "main_ms": 0.565129,
+        "loss": 0.64435,
+        "weight": 2.5944991,
+        "tail_ms": 2.594499,
+        "timeout_ms": 1.1618257246545942
+      },
+      {
+        "layer": 22,
+        "rate": 0.0,
+        "main_ms": 2.040745,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 23,
+        "rate": 0.7,
+        "main_ms": 0.659318,
+        "loss": 0.65905,
+        "weight": 3.02691562,
+        "tail_ms": 3.026916,
+        "timeout_ms": 1.3554633469230382
+      },
+      {
+        "layer": 24,
+        "rate": 0.0,
+        "main_ms": 1.726784,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 25,
+        "rate": 0.7,
+        "main_ms": 0.565129,
+        "loss": 0.67375,
+        "weight": 2.5944991,
+        "tail_ms": 2.594499,
+        "timeout_ms": 1.1618257246545942
+      },
+      {
+        "layer": 26,
+        "rate": 0.0,
+        "main_ms": 2.040745,
+        "loss": 0.0,
+        "weight": 0.0,
+        "tail_ms": 0.0,
+        "timeout_ms": 0.0
+      },
+      {
+        "layer": 27,
+        "rate": 0.7,
+        "main_ms": 0.659318,
+        "loss": 0.68845,
+        "weight": 3.02691562,
+        "tail_ms": 3.026916,
+        "timeout_ms": 1.3554633469230382
+      }
+    ],
+    "reason": ""
+  },
+  "offload_m": 28,
+  "tx_ms": 0.0,
+  "end_ms": 0.0,
+  "network_ms": 0.0,
+  "total_ms": 32.24377,
+  "offloaded_layers": [],
+  "reason": "",
+  "rates": [
+    0.0,
+    0.9,
+    0.0,
+    0.9,
+    0.0,
+    0.8,
+    0.0,
+    0.9,
+    0.0,
+    0.8,
+    0.0,
+    0.9,
+    0.0,
+    0.8,
+    0.0,
+    0.8,
+    0.0,
+    0.7,
+    0.0,
+    0.8,
+    0.0,
+    0.7,
+    0.0,
+    0.7,
+    0.0,
+    0.7,
+    0.0,
+    0.7
+  ],
+  "timeouts_ms": [
+    0.0,
+    1.4937759329782023,
+    0.0,
+    1.7427385914599263,
+    0.0,
+    1.3278008288163983,
+    0.0,
+    1.7427385914599263,
+    0.0,
+    1.3278008288163983,
+    0.0,
+    1.7427385914599263,
+    0.0,
+    1.3278008288163983,
+    0.0,
+    1.549100969191482,
+    0.0,
+    1.1618257246545942,
+    0.0,
+    1.549100969191482,
+    0.0,
+    1.1618257246545942,
+    0.0,
+    1.3554633469230382,
+    0.0,
+    1.1618257246545942,
+    0.0,
+    1.3554633469230382
+  ]
+}

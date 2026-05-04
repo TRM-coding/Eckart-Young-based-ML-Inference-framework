@@ -19,6 +19,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from loss_table import load_measured_loss_table, measured_or_heuristic_loss
 from scheduler import (
     result_to_json,
     save_json,
@@ -209,6 +210,7 @@ def make_profile(
     rates: list[float],
     local_deadline_ms: float,
     request_deadline_ms: float,
+    loss_table: dict[tuple[int, str], float] | None = None,
 ) -> dict[str, Any]:
     layers = []
     for layer in range(n_layers):
@@ -218,7 +220,7 @@ def make_profile(
             # Main path becomes faster as more SVD rank is truncated, but the
             # speedup is deliberately conservative to match the exp10 findings.
             main_ms = per_layer_full_ms * load_scale * layer_shape * (1.0 - 0.42 * rate)
-            loss = (rate * rate) * (1.0 + 0.015 * layer)
+            loss = measured_or_heuristic_loss(loss_table or {}, layer, rate)
             weight = rate * layer_shape
             candidates.append(
                 {
@@ -244,6 +246,7 @@ def make_profile(
         "load_scale": load_scale,
         "local_deadline_ms": local_deadline_ms,
         "request_deadline_ms": request_deadline_ms,
+        "loss_source": "measured spectral residual norm" if loss_table else "heuristic placeholder",
         "tx_ms_by_split_m": tx_by_split,
         "end_ms_by_split_m": end_by_split,
         "layers": layers,
@@ -265,6 +268,8 @@ def main() -> int:
     parser.add_argument("--timeout-budget-ms", type=float, default=8.0)
     parser.add_argument("--quantum-ms", type=float, default=0.5)
     parser.add_argument("--out-dir", type=Path, default=EXP_DIR / "results/latest")
+    parser.add_argument("--loss-table", type=Path, help="CSV from measure_svd_matrix_loss.py, normally svd_loss_for_scheduler.csv")
+    parser.add_argument("--loss-reduction", choices=["sum", "mean", "max"], default="sum")
     parser.add_argument("--use-cgroup", action="store_true")
     parser.add_argument("--skip-decode", action="store_true")
     args = parser.parse_args()
@@ -273,6 +278,7 @@ def main() -> int:
     phone_cpus = parse_cpu_list(args.phone_cpus)
     load_cpus = parse_cpu_list(args.load_cpus)
     args.out_dir.mkdir(parents=True, exist_ok=True)
+    loss_table = load_measured_loss_table(args.loss_table, args.loss_reduction)
 
     cgroup = make_cgroup("exp12_algorithms_run", run_cpus) if args.use_cgroup else None
     baseline = {"n_layer": 28, "generation_decode_ms": 32.0, "decode_tok_s": 31.25, "succeed": True}
@@ -299,6 +305,7 @@ def main() -> int:
         rates=[0.0, 0.25, 0.5, 0.75],
         local_deadline_ms=local_deadline,
         request_deadline_ms=request_deadline,
+        loss_table=loss_table,
     )
     profile_path = args.out_dir / "profile.json"
     save_json(profile_path, profile)

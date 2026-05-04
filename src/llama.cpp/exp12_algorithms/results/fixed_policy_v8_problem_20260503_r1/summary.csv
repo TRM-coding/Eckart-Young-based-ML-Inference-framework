@@ -1,0 +1,4 @@
+scenario,n_cores,cpus,loads,selected_policy,baseline_runs,scheduler_runs,baseline_tok_s_median,scheduler_tok_s_median,speedup_median
+4c_balanced_high,4,"60,61,62,63","20,40,60,80",all_0.5,9,9,17.7694,21.8974,1.2323094758404898
+4c_gradient,4,"60,61,62,63","0,20,60,100",all_0.3,9,9,17.7079,19.243,1.0866901213582638
+4c_high,4,"60,61,62,63","70,80,90,100",all_0.6,9,9,19.74,22.8288,1.1564741641337388

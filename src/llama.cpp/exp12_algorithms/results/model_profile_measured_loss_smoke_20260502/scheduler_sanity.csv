@@ -1,0 +1,2 @@
+scenario,status,feasible,mode,p,major_cpus,minor_cpus,split_m,offloaded_layers,clipped_layers,max_rate,loss,main_ms,total_ms,full_local_ms,estimated_speedup_vs_full_local,local_deadline_ms,request_deadline_ms
+load_50,ok,True,local,8,"60,61,62,63,64,65,66,67",,27,0,0,0.0,0.0,31.880394,31.880394,31.8804,1.0000001882034457,32.356158,33.317232

@@ -25,6 +25,8 @@ import statistics
 from pathlib import Path
 from typing import Any
 
+from loss_table import load_measured_loss_table, measured_or_heuristic_loss
+
 
 EXP_DIR = Path(__file__).resolve().parent
 
@@ -156,9 +158,8 @@ def layer_work_units(n_layers: int, layer: int) -> float:
     return shape / denom
 
 
-def candidate_loss(layer: int, rate: float) -> float:
-    # Placeholder until a measured spectral/PPL loss table is available.
-    return (rate * rate) * (1.0 + 0.015 * layer)
+def candidate_loss(layer: int, rate: float, loss_table: dict[tuple[int, str], float] | None = None) -> float:
+    return measured_or_heuristic_loss(loss_table or {}, layer, rate)
 
 
 def build_profile_for_utilization(
@@ -175,6 +176,7 @@ def build_profile_for_utilization(
     tx_base_ms: float,
     tx_per_layer_ms: float,
     end_per_layer_ms: float,
+    loss_table: dict[tuple[int, str], float] | None = None,
 ) -> dict[str, Any]:
     sorted_cpus = sorted(cpus, key=lambda cpu: speed_for_cpu(speeds, cpu, util[cpu]), reverse=True)
     full_local_ms = sum(
@@ -206,7 +208,7 @@ def build_profile_for_utilization(
                         "rate": round(rate, 6),
                         "main_ms": round(main_ms, 6),
                         "tail_ms": round(tail_ms, 6),
-                        "loss": round(candidate_loss(layer, rate), 8),
+                        "loss": round(candidate_loss(layer, rate, loss_table), 8),
                         "weight": round(weight, 8),
                     }
                 )
@@ -231,6 +233,7 @@ def build_profile_for_utilization(
     return {
         "source": "additive core-speed profile from validate_core_additivity.py",
         "model": "T ~= work / sum(core_speed(util)) * calibration(n_cpus, avg_util)",
+        "loss_source": "measured spectral residual norm" if loss_table else "heuristic placeholder",
         "n_layers": n_layers,
         "cpus": cpus,
         "utilization": {str(cpu): util[cpu] for cpu in cpus},
@@ -276,6 +279,8 @@ def main() -> int:
     parser.add_argument("--tx-base-ms", type=float, default=3.0)
     parser.add_argument("--tx-per-layer-ms", type=float, default=0.09)
     parser.add_argument("--end-per-layer-ms", type=float, default=0.62)
+    parser.add_argument("--loss-table", type=Path, help="CSV from measure_svd_matrix_loss.py, normally svd_loss_for_scheduler.csv")
+    parser.add_argument("--loss-reduction", choices=["sum", "mean", "max"], default="sum")
     parser.add_argument("--out-dir", type=Path, default=EXP_DIR / "results/additive_profiles_latest")
     args = parser.parse_args()
 
@@ -283,6 +288,7 @@ def main() -> int:
     rates = parse_rates(args.rates)
     speeds = load_single_core_speeds(args.single_core_csv)
     calibration = load_calibration(args.additivity_error_csv)
+    loss_table = load_measured_loss_table(args.loss_table, args.loss_reduction)
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
     scenarios: list[tuple[str, dict[int, int]]] = []
@@ -317,6 +323,7 @@ def main() -> int:
             tx_base_ms=args.tx_base_ms,
             tx_per_layer_ms=args.tx_per_layer_ms,
             end_per_layer_ms=args.end_per_layer_ms,
+            loss_table=loss_table,
         )
         path = args.out_dir / f"profile_{name}.json"
         path.write_text(json.dumps(profile, ensure_ascii=False, indent=2) + "\n")
@@ -337,6 +344,7 @@ def main() -> int:
         f"- CPUs: `{cpu_spec(cpus)}`",
         f"- Rates: `{','.join(str(rate) for rate in rates)}`",
         f"- Scenarios: `{', '.join(item['name'] for item in index)}`",
+        f"- Loss source: `{'measured spectral residual norm' if loss_table else 'heuristic placeholder'}`",
         "",
         "| scenario | full local ms | local deadline | request deadline | profile |",
         "|---|---:|---:|---:|---|",
