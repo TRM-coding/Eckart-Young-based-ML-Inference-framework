@@ -1,0 +1,7 @@
+display_name,policy,split_m,tok_s,baseline_tok_s,best_major_only_tok_s
+PC基线,pc_full,,0.365604,0.365604,7.96387
+No-Offloading 2核,major_only_2c,,7.96387,0.365604,7.96387
+No-Offloading 4核,major_only_4c,,6.20544,0.365604,7.96387
+No-Offloading 6核,major_only_6c,,1.91684,0.365604,7.96387
+协同推理 M=2,split,2,12.9263,0.365604,7.96387
+协同推理 M=4,split,4,5.50928,0.365604,7.96387

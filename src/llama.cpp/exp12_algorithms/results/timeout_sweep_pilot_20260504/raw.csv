@@ -1,0 +1,97 @@
+policy,timeout,status,decode_tok_s,generation_decode_ms,prefill_decode_ms,elapsed_s,output_tail
+baseline,0,ok,26.5614,301.188,2553.79,3.4688706398010254,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=8 batch=8
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=20.2053 piece="",""
+  id=304 logit=18.9277 piece="" in""
+  id=3837 logit=18.7558 piece=""，""
+  id=1052 logit=18.5616 piece="" there""
+  id=358 logit=17.8374 piece="" I""
+Autoregressive generation:
+Generated text: , there was a little girl named Sally
+Decode-only throughput: 26.5614 tokens/s (8 tokens in 0.301188 s of llama_decode)
+End-to-end throughput: 26.298 tokens/s (8 tokens in 0.304206 s)
+[decode-stage-profile] model_load=369.563 ms context_create=48.5801 ms tokenize=0.46216 ms prefill_decode=2553.79 ms generation_decode=301.188 ms generation_total=304.206 ms program_total=3286.84 ms
+[svd-local-op-profile] up_ops=252 gate_ops=252 down_ops=252 up_total=208.530 ms gate_total=219.841 ms down_total=196.950 ms up_v=50.621 ms gate_v=60.492 ms down_v=106.893 ms up_u=157.866 ms gate_u=159.305 ms down_u=90.003 ms
+[svd-local-stage-profile] attention_total=346.966 ms ffn_total=835.751 ms ffn_svd_total=625.321 ms ffn_svd_v=218.006 ms ffn_svd_u=407.174 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=27 gate_finish=0 gate_cache=0 gate_no_request=27 down_finish=0 down_cache=0 down_no_request=27 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+sched,10,ok,26.0216,307.437,4208.7,5.098179340362549,"prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=19.2427 piece="",""
+  id=264 logit=17.786 piece="" a""
+  id=271 logit=17.4877 piece=""
+
+""
+  id=358 logit=17.486 piece="" I""
+  id=198 logit=17.4322 piece=""
+""
+Autoregressive generation:
+Generated text: , there was a man named John.
+Decode-only throughput: 26.0216 tokens/s (8 tokens in 0.307437 s of llama_decode)
+End-to-end throughput: 25.7684 tokens/s (8 tokens in 0.310458 s)
+[decode-stage-profile] model_load=376.117 ms context_create=48.6037 ms tokenize=0.465878 ms prefill_decode=4208.7 ms generation_decode=307.437 ms generation_total=310.458 ms program_total=4954.68 ms
+[svd-local-op-profile] up_ops=252 gate_ops=252 down_ops=252 up_total=298.126 ms gate_total=298.749 ms down_total=286.185 ms up_v=82.623 ms gate_v=82.171 ms down_v=136.022 ms up_u=215.370 ms gate_u=216.401 ms down_u=150.018 ms
+[svd-local-stage-profile] attention_total=566.476 ms ffn_total=1235.024 ms ffn_svd_total=883.060 ms ffn_svd_v=300.816 ms ffn_svd_u=581.789 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=27 gate_finish=0 gate_cache=0 gate_no_request=27 down_finish=0 down_cache=0 down_no_request=27 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=113 up_drop=0 up_wait=0.258 ms gate_keep=113 gate_drop=0 gate_wait=0.103 ms down_keep=113 down_drop=0 down_wait=0.403 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+sched,40,ok,25.5116,313.582,9915.95,10.803974628448486,"prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=19.2427 piece="",""
+  id=264 logit=17.786 piece="" a""
+  id=271 logit=17.4877 piece=""
+
+""
+  id=358 logit=17.486 piece="" I""
+  id=198 logit=17.4322 piece=""
+""
+Autoregressive generation:
+Generated text: , there was a man named John.
+Decode-only throughput: 25.5116 tokens/s (8 tokens in 0.313582 s of llama_decode)
+End-to-end throughput: 25.2772 tokens/s (8 tokens in 0.316491 s)
+[decode-stage-profile] model_load=382.646 ms context_create=42.9794 ms tokenize=0.447662 ms prefill_decode=9915.95 ms generation_decode=313.582 ms generation_total=316.491 ms program_total=10668.8 ms
+[svd-local-op-profile] up_ops=252 gate_ops=252 down_ops=252 up_total=589.723 ms gate_total=604.360 ms down_total=601.054 ms up_v=183.697 ms gate_v=189.123 ms down_v=246.033 ms up_u=405.894 ms gate_u=415.075 ms down_u=354.887 ms
+[svd-local-stage-profile] attention_total=1340.986 ms ffn_total=2695.071 ms ffn_svd_total=1795.137 ms ffn_svd_v=618.853 ms ffn_svd_u=1175.856 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=27 gate_finish=0 gate_cache=0 gate_no_request=27 down_finish=0 down_cache=0 down_no_request=27 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=113 up_drop=0 up_wait=0.011 ms gate_keep=113 gate_drop=0 gate_wait=0.006 ms down_keep=113 down_drop=0 down_wait=0.006 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+sched,100,ok,25.9048,308.823,2359.46,3.239206075668335,"prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=19.2427 piece="",""
+  id=264 logit=17.786 piece="" a""
+  id=271 logit=17.4877 piece=""
+
+""
+  id=358 logit=17.486 piece="" I""
+  id=198 logit=17.4322 piece=""
+""
+Autoregressive generation:
+Generated text: , there was a man named John.
+Decode-only throughput: 25.9048 tokens/s (8 tokens in 0.308823 s of llama_decode)
+End-to-end throughput: 25.6684 tokens/s (8 tokens in 0.311667 s)
+[decode-stage-profile] model_load=367.246 ms context_create=43.7088 ms tokenize=0.471078 ms prefill_decode=2359.46 ms generation_decode=308.823 ms generation_total=311.667 ms program_total=3092.87 ms
+[svd-local-op-profile] up_ops=252 gate_ops=252 down_ops=252 up_total=207.436 ms gate_total=205.392 ms down_total=194.458 ms up_v=53.647 ms gate_v=53.985 ms down_v=105.014 ms up_u=153.649 ms gate_u=151.278 ms down_u=89.311 ms
+[svd-local-stage-profile] attention_total=340.144 ms ffn_total=802.045 ms ffn_svd_total=607.286 ms ffn_svd_v=212.646 ms ffn_svd_u=394.238 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=27 gate_finish=0 gate_cache=0 gate_no_request=27 down_finish=0 down_cache=0 down_no_request=27 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=113 up_drop=0 up_wait=0.013 ms gate_keep=113 gate_drop=0 gate_wait=0.018 ms down_keep=113 down_drop=0 down_wait=0.006 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"

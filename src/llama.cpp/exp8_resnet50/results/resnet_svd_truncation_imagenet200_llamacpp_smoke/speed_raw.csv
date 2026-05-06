@@ -1,0 +1,3 @@
+truncation,keep_ratio,status,output_tail
+0.0,1.0,rc_1,taskset: failed to set pid 1438310's affinity: Invalid argument
+0.8,0.19999999999999996,rc_1,taskset: failed to set pid 1438315's affinity: Invalid argument

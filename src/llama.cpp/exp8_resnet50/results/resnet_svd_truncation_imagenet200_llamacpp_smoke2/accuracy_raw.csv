@@ -1,0 +1,3 @@
+truncation,keep_ratio,correct,total,bad,top1,elapsed_s,predictions
+0.0,1.0,3,4,0,0.75,0.7697129249572754,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_smoke2/predictions_trunc00.csv
+0.8,0.19999999999999996,0,4,0,0.0,0.8710808753967285,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_smoke2/predictions_trunc80.csv

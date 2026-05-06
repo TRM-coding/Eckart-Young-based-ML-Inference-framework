@@ -1,0 +1,9 @@
+scenario,loads,baseline_tok_s,selected_policy,selected_detail,selected_tok_s,speedup_vs_baseline,ppl,ppl_note
+2c_low_01,"10,20,0,0,0,0,0,0",29.556,baseline_no_svd,,29.556,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+2c_low_02,"20,30,0,0,0,0,0,0",30.4393,baseline_no_svd,,30.4393,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+4c_low_01,"10,10,20,20,0,0,0,0",29.6965,baseline_no_svd,,29.6965,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+4c_low_02,"10,20,30,40,0,0,0,0",30.3009,baseline_no_svd,,30.3009,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+6c_low_01,"10,10,20,20,30,30,0,0",11.7154,major_only_no_svd,p=1;major=66,19.1346,1.6332861020537068,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+6c_low_02,"10,20,20,30,30,40,0,0",18.1481,baseline_no_svd,,18.1481,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+8c_low_01,"10,10,20,20,30,30,40,40",23.3079,baseline_no_svd,,23.3079,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+8c_low_02,"10,20,20,30,30,40,40,50",17.1809,baseline_no_svd,,17.1809,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity

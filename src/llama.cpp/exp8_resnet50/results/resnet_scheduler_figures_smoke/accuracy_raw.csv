@@ -1,0 +1,3 @@
+label,correct,total,top1
+baseline,0,4,0.0
+svd_r50,0,4,0.0

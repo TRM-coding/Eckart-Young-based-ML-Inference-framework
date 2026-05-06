@@ -32,7 +32,9 @@
 
 namespace {
 
+#if !defined(__ANDROID__)
 extern "C" void ggml_svd_local_profile_print_and_reset(void) {}
+#endif
 
 using gguf_ptr = std::unique_ptr<gguf_context, decltype(&gguf_free)>;
 using ggml_ctx_ptr = std::unique_ptr<ggml_context, decltype(&ggml_free)>;
@@ -1043,6 +1045,113 @@ std::vector<float> run_inference(const resnet50_model & model, const std::vector
     return logits;
 }
 
+int total_bottleneck_blocks(const resnet50_model & model) {
+    int total = 0;
+    for (uint32_t n : model.stage_block_count) {
+        total += static_cast<int>(n);
+    }
+    return total;
+}
+
+feature_map run_prefix_feature(
+        const resnet50_model & model,
+        const std::vector<float> & input,
+        int split_blocks,
+        int n_threads) {
+    const int image_size = static_cast<int>(model.preproc.image_size);
+    feature_map cur;
+    cur.width = image_size;
+    cur.height = image_size;
+    cur.channels = 3;
+    cur.data = input;
+
+    cur = conv2d(
+            require_tensor(model.weights.get(), "resnet.stem.conv.weight"),
+            require_tensor(model.weights.get(), "resnet.stem.conv.bias"),
+            cur,
+            2,
+            3,
+            n_threads);
+    relu_inplace(cur);
+    cur = max_pool_2d(cur, 3, 2, 1);
+
+    int block_linear = 0;
+    for (int stage_idx = 0; stage_idx < 4; ++stage_idx) {
+        for (uint32_t block_idx = 0; block_idx < model.stage_block_count[stage_idx]; ++block_idx) {
+            if (block_linear >= split_blocks) {
+                return cur;
+            }
+            cur = bottleneck_block(model, cur, stage_idx, static_cast<int>(block_idx), n_threads);
+            ++block_linear;
+        }
+    }
+    return cur;
+}
+
+feature_map run_tail_feature(
+        const resnet50_model & model,
+        feature_map cur,
+        int split_blocks,
+        int n_threads) {
+    int block_linear = 0;
+    for (int stage_idx = 0; stage_idx < 4; ++stage_idx) {
+        for (uint32_t block_idx = 0; block_idx < model.stage_block_count[stage_idx]; ++block_idx) {
+            if (block_linear >= split_blocks) {
+                cur = bottleneck_block(model, cur, stage_idx, static_cast<int>(block_idx), n_threads);
+            }
+            ++block_linear;
+        }
+    }
+    return cur;
+}
+
+std::vector<float> classify_feature(const resnet50_model & model, feature_map & cur, int n_threads) {
+#ifdef RESNET50_USE_ONEDNN
+    ensure_plain(cur);
+#endif
+    std::vector<float> pooled(static_cast<size_t>(cur.channels), 0.0f);
+    const int spatial = cur.width * cur.height;
+    for (int c = 0; c < cur.channels; ++c) {
+        double sum = 0.0;
+        for (int y = 0; y < cur.height; ++y) {
+            for (int x = 0; x < cur.width; ++x) {
+                sum += cur.at(c, y, x);
+            }
+        }
+        pooled[c] = static_cast<float>(sum / spatial);
+    }
+
+    const ggml_tensor * classifier_w = require_tensor(model.weights.get(), "resnet.classifier.weight");
+    const ggml_tensor * classifier_b = require_tensor(model.weights.get(), "resnet.classifier.bias");
+    const int in_features = static_cast<int>(classifier_w->ne[0]);
+    const int out_features = static_cast<int>(classifier_w->ne[1]);
+    if (in_features != cur.channels) {
+        throw std::runtime_error("classifier input size mismatch");
+    }
+
+    std::vector<float> logits(static_cast<size_t>(out_features), 0.0f);
+    parallel_for_chunks(out_features, n_threads, [&](int begin, int end) {
+        for (int oc = begin; oc < end; ++oc) {
+            float sum = tensor_scalar(classifier_b, oc);
+            const int64_t w_base = static_cast<int64_t>(in_features) * oc;
+            for (int ic = 0; ic < in_features; ++ic) {
+                sum += pooled[ic] * tensor_scalar(classifier_w, w_base + ic);
+            }
+            logits[oc] = sum;
+        }
+    });
+    return logits;
+}
+
+std::vector<float> run_tail_logits(
+        const resnet50_model & model,
+        feature_map cur,
+        int split_blocks,
+        int n_threads) {
+    cur = run_tail_feature(model, std::move(cur), split_blocks, n_threads);
+    return classify_feature(model, cur, n_threads);
+}
+
 std::vector<std::pair<int, float>> top_k(const std::vector<float> & logits, int k) {
     std::vector<int> ids(logits.size());
     std::iota(ids.begin(), ids.end(), 0);
@@ -1118,6 +1227,7 @@ args parse_args(int argc, char ** argv) {
 
 } // namespace
 
+#ifndef RESNET50_NO_MAIN
 int main(int argc, char ** argv) {
     try {
         const args cli = parse_args(argc, argv);
@@ -1162,3 +1272,4 @@ int main(int argc, char ** argv) {
         return 1;
     }
 }
+#endif

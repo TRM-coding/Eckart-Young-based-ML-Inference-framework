@@ -1,0 +1,13 @@
+occupied_count,scenario,source_type,loads,baseline_tok_s,schedule_tok_s,speedup,ppl,policy,detail
+2,2occ_target2x_r2_03,major_only_new_search,"65,95,0,0,0,0,0,0",16.853100,43.337100,2.571462,15.142400,major_only_no_svd,"p=7;major=62,63,64,65,66,67,60"
+2,2occ_target2x_r2_05,major_only_new_search,"60,100,0,0,0,0,0,0",14.362900,37.294300,2.596572,15.142400,major_only_no_svd,"p=6;major=62,63,64,65,66,67"
+2,2c_plot_search_06,major_only_or_baseline,"55,95,0,0,0,0,0,0",19.191300,24.652800,1.284582,15.142400,major_only_no_svd,p=1;major=62
+4,4c_plot_search_06,major_only_or_baseline,"70,80,90,100,0,0,0,0",12.707900,26.176900,2.059892,15.142400,major_only_no_svd,p=1;major=64
+4,4c_plot_search_03,major_only_or_baseline,"50,50,80,90,0,0,0,0",21.087200,27.205800,1.290157,15.142400,major_only_no_svd,p=1;major=64
+4,4c_plot_search_02,major_only_or_baseline,"40,60,80,100,0,0,0,0",22.142500,26.545500,1.198848,15.142400,major_only_no_svd,p=1;major=64
+6,6c_plot_extra_03,major_only_or_baseline,"30,50,80,90,100,100,0,0",9.535680,21.167500,2.219821,15.142400,major_only_no_svd,p=1;major=66
+6,6c_plot_extra_01,major_only_or_baseline,"10,30,70,90,100,100,0,0",10.350000,17.286700,1.670213,15.142400,major_only_no_svd,p=1;major=66
+6,6c_plot_search_04,major_only_or_baseline,"60,60,80,80,100,100,0,0",18.169800,22.030200,1.212462,15.142400,major_only_no_svd,p=1;major=66
+8,8occ_cfg3,svd_timeout,"20,30,40,50,90,90,100,100",12.284000,27.632300,2.249455,18.995400,svd_timeout,timeout=20ms;rate=odd_0.05
+8,8c_mw_01,major_only_or_baseline,"20,30,40,50,90,90,100,100",26.260800,34.317900,1.306811,15.142400,major_only_no_svd,"p=7;major=60,61,62,63,64,65,66"
+8,8occ_cfg2,svd_timeout,"20,30,40,50,90,90,100,100",23.574500,27.301500,1.158095,16.585614,svd_timeout,timeout=60ms;rate=mod3_1_0.05

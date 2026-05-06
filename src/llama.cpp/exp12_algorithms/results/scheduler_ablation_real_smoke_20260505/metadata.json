@@ -1,0 +1,50 @@
+{
+  "date": "2026-05-05 23:52:10 +0800",
+  "model": "/home/tianruiming/CE_ADA_LLAMA/src/llama.cpp/gguf_models/qwen.gguf.sort_svd.compact.llama_quant_q4_0.gguf",
+  "ppl_model": "/home/tianruiming/CE_ADA_LLAMA/src/llama.cpp/gguf_models/qwen.gguf.sort_svd.compact.gguf",
+  "timeouts": [
+    20
+  ],
+  "policies": [
+    "scheduler",
+    "A1_random_input"
+  ],
+  "scenarios": [
+    {
+      "name": "2occ_high",
+      "occupied_count": 2,
+      "cpus": [
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67
+      ],
+      "loads": [
+        55,
+        100,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "workers": [
+        1,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "method": "matrixprod"
+    }
+  ],
+  "note": "All decode/PPL rows are direct process executions; no inferred metrics are written."
+}

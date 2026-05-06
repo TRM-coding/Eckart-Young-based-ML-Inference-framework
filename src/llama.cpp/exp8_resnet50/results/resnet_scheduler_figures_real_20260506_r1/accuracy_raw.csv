@@ -1,0 +1,7 @@
+label,correct,total,top1
+baseline,25,32,0.78125
+svd_r30,0,32,0.0
+svd_r40,0,32,0.0
+svd_r50,0,32,0.0
+svd_r65,0,32,0.0
+svd_r80,12,32,0.375

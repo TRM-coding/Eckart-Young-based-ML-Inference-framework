@@ -1,0 +1,5 @@
+image,label0,pred,correct,status
+src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_smoke2/imagenet_val_subset_200/ILSVRC2012_val_00000001.JPEG,65,65,1,ok
+src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_smoke2/imagenet_val_subset_200/ILSVRC2012_val_00000002.JPEG,970,795,0,ok
+src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_smoke2/imagenet_val_subset_200/ILSVRC2012_val_00000003.JPEG,230,230,1,ok
+src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_smoke2/imagenet_val_subset_200/ILSVRC2012_val_00000004.JPEG,809,809,1,ok

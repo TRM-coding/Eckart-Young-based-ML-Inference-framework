@@ -34,6 +34,7 @@ struct svd_eval_params {
     float local_group_a_share = 0.75f;
     int32_t local_minor_timeout_ms = 0;
     std::string local_layer_timeouts_arg;
+    std::string local_tail_mode;
 };
 
 static std::vector<float> parse_offload_rates_arg(const std::string & arg, int32_t n_layer) {
@@ -234,6 +235,14 @@ static bool parse_svd_eval_params(
             svd_params.local_layer_timeouts_arg = argv[++i];
             continue;
         }
+        if (arg == "--svd-local-tail-mode") {
+            if (i + 1 >= argc) {
+                LOG_ERR("%s: missing value for %s\n", __func__, arg.c_str());
+                return false;
+            }
+            svd_params.local_tail_mode = argv[++i];
+            continue;
+        }
         filtered_argv.push_back(argv[i]);
     }
 
@@ -287,11 +296,17 @@ static common_init_result common_init_from_params_svd(
 
     const bool use_local_split = has_rates && !local_group_a.empty() && !local_group_b.empty();
     if (use_local_split) {
+        const bool force_drop_tail =
+            svd_params.local_tail_mode == "drop_tail" ||
+            svd_params.local_tail_mode == "drop" ||
+            svd_params.local_tail_mode == "discard_tail" ||
+            svd_params.local_tail_mode == "discard";
         ggml_cpu_set_svd_local_split(
             local_group_a.data(), (int32_t) local_group_a.size(),
             local_group_b.data(), (int32_t) local_group_b.size(),
             svd_params.local_group_a_share,
             svd_params.local_minor_timeout_ms);
+        ggml_cpu_set_svd_force_drop_tail(force_drop_tail);
         if (!local_layer_timeouts.empty()) {
             ggml_cpu_set_svd_local_layer_timeouts(
                 local_layer_timeouts.data(),
@@ -306,9 +321,13 @@ static common_init_result common_init_from_params_svd(
                 (double) svd_params.local_group_a_share,
                 svd_params.local_minor_timeout_ms,
                 local_layer_timeouts.size());
+        if (force_drop_tail) {
+            LOG_INF("%s: SVD local split tail mode: drop_tail\n", __func__);
+        }
     } else {
         ggml_cpu_clear_svd_local_split();
         ggml_cpu_clear_svd_local_layer_timeouts();
+        ggml_cpu_set_svd_force_drop_tail(false);
     }
 
     llama_context * ctx = llama_init_from_model(model, cparams);

@@ -1,0 +1,15 @@
+label,load_pct,workers_per_core,method,prio_mode,policy,split_m,status,tok_s,ms_per_token,prefix_ms,server_ms,network_ms,generated,run_cpus,threads,log,server_log
+normal_w1_load0,0,1,matrixprod,normal,pc_full,,ok,51.4889,,,,,,72-79,8,normal_w1_load0_pc_full.log,
+normal_w1_load0,0,1,matrixprod,normal,major_only_4c,,ok,31.8139,,,,,,72-75,4,normal_w1_load0_major_only_4c.log,
+normal_w1_load0,0,1,matrixprod,normal,major_only_6c,,ok,44.5079,,,,,,72-77,6,normal_w1_load0_major_only_6c.log,
+normal_w1_load0,0,1,matrixprod,normal,split,2,ok,21.3372,46.8665,94.69,914.509,490.329,32,,,normal_w1_load0_M2_client.log,normal_w1_load0_M2_server.log
+normal_w1_load0,0,1,matrixprod,normal,split,4,ok,26.2376,38.1132,171.386,632.299,415.705,32,,,normal_w1_load0_M4_client.log,normal_w1_load0_M4_server.log
+normal_w1_load0,0,1,matrixprod,normal,split,6,ok,18.2557,54.7773,275.103,989.272,488.29,32,,,normal_w1_load0_M6_client.log,normal_w1_load0_M6_server.log
+normal_w1_load0,0,1,matrixprod,normal,split,8,ok,14.4266,69.3165,345.447,1410.28,462.205,32,,,normal_w1_load0_M8_client.log,normal_w1_load0_M8_server.log
+normal_w1_load80,80,1,matrixprod,normal,pc_full,,ok,0.537781,,,,,,72-79,8,normal_w1_load80_pc_full.log,
+normal_w1_load80,80,1,matrixprod,normal,major_only_4c,,ok,6.66104,,,,,,72-75,4,normal_w1_load80_major_only_4c.log,
+normal_w1_load80,80,1,matrixprod,normal,major_only_6c,,ok,2.15273,,,,,,72-77,6,normal_w1_load80_major_only_6c.log,
+normal_w1_load80,80,1,matrixprod,normal,split,2,ok,3.0994,322.643,5989.69,2745.79,1588.82,32,,,normal_w1_load80_M2_client.log,normal_w1_load80_M2_server.log
+normal_w1_load80,80,1,matrixprod,normal,split,4,ok,2.15038,465.034,10963.0,2175.78,1742.19,32,,,normal_w1_load80_M4_client.log,normal_w1_load80_M4_server.log
+normal_w1_load80,80,1,matrixprod,normal,split,6,ok,1.72463,579.834,14798.9,2253.84,1501.77,32,,,normal_w1_load80_M6_client.log,normal_w1_load80_M6_server.log
+normal_w1_load80,80,1,matrixprod,normal,split,8,ok,1.61789,618.088,16254.6,1529.59,1994.38,32,,,normal_w1_load80_M8_client.log,normal_w1_load80_M8_server.log

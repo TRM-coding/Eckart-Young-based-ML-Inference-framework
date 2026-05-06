@@ -826,9 +826,14 @@ feature_map conv2d_svd_fold_onednn(
     const int kh = static_cast<int>(weight->ne[1]);
     const int in_channels = static_cast<int>(weight->ne[2]);
     const int out_channels = static_cast<int>(weight->ne[3]);
-    const svd_factors factors = load_conv_svd_factors(weights_ctx, weight_name, weight);
 
+    static std::unordered_map<std::string, svd_factors> factor_cache;
     static std::unordered_map<std::string, onednn_weight_bundle> weight_cache;
+    if (factor_cache.find(weight_name) == factor_cache.end()) {
+        factor_cache.emplace(weight_name, load_conv_svd_factors(weights_ctx, weight_name, weight));
+    }
+    const svd_factors & factors = factor_cache.at(weight_name);
+
     const std::string key_v = weight_name + "#v";
     const std::string key_u = weight_name + "#u";
     if (weight_cache.find(key_v) == weight_cache.end()) {

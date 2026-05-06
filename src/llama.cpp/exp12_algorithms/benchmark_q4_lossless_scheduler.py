@@ -26,7 +26,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from benchmark_heterogeneous_schedule_cgroup import start_heterogeneous_load, stop_heterogeneous_load
+from benchmark_heterogeneous_schedule_cgroup import stop_heterogeneous_load
 from benchmark_model_schedule_cgroup import DEFAULT_CGROUP_ROOT, ROOT, decode_once, make_cgroup
 from run_exp12_local import cpu_spec
 
@@ -47,15 +47,23 @@ STEADY_RE = __import__("re").compile(
     r"server_decode_ms=(?P<server_decode_ms>[0-9.eE+-]+)\s+"
     r"network_wait_ms=(?P<network_wait_ms>[0-9.eE+-]+)"
 )
+PHONE_FULL_RE = __import__("re").compile(
+    r"\[tail-local-bench\]\s+mode=full_token\s+tokens=(?P<generated>\d+)\s+threads=\d+\s+"
+    r"prefill_ms=(?P<prefill_decode_ms>[0-9.eE+-]+)\s+"
+    r"decode_ms=(?P<steady_decode_ms>[0-9.eE+-]+)\s+"
+    r"avg_decode_ms=(?P<generation_decode_ms>[0-9.eE+-]+)\s+"
+    r"throughput=(?P<decode_tok_s>[0-9.eE+-]+)\s+tok/s"
+)
 
 
 ADB_SERIAL = ""
+ADB_PORT = "5038"
 
 
 def adb(args: list[str], timeout_s: float | None = None) -> subprocess.CompletedProcess[str]:
     serial_args = ["-s", ADB_SERIAL] if ADB_SERIAL else []
     return subprocess.run(
-        ["adb", "-P", "5038", *serial_args, *args],
+        ["adb", "-P", ADB_PORT, *serial_args, *args],
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
@@ -83,6 +91,47 @@ def parse_cpu_list(spec: str) -> list[int]:
         else:
             out.append(int(part))
     return out
+
+
+def start_heterogeneous_load(
+    cgroup: Path,
+    cpus: list[int],
+    loads: list[int],
+    *,
+    workers_per_core: int,
+    method: str,
+) -> list[subprocess.Popen[str]]:
+    procs: list[subprocess.Popen[str]] = []
+    for cpu, load in zip(cpus, loads):
+        if load <= 0:
+            continue
+        for _ in range(workers_per_core):
+            cmd = [
+                "taskset",
+                "-c",
+                str(cpu),
+                "stress-ng",
+                "--cpu",
+                "1",
+                "--cpu-load",
+                str(load),
+                "--cpu-method",
+                method,
+                "--quiet",
+            ]
+            script = f"echo $$ > {shlex.quote(str(cgroup / 'cgroup.procs'))}; exec {shlex.join(cmd)}"
+            procs.append(
+                subprocess.Popen(
+                    ["sudo", "-n", "bash", "-lc", script],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    start_new_session=True,
+                    text=True,
+                )
+            )
+    if procs:
+        time.sleep(1.0)
+    return procs
 
 
 def scenario_defaults() -> list[dict[str, Any]]:
@@ -160,7 +209,7 @@ def run_layer_coop(
         f"{pc_host}:{port}"
     )
     server_proc = subprocess.Popen(
-        ["adb", "-P", "5038", *(["-s", ADB_SERIAL] if ADB_SERIAL else []), "shell", server_cmd],
+        ["adb", "-P", ADB_PORT, *(["-s", ADB_SERIAL] if ADB_SERIAL else []), "shell", server_cmd],
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
@@ -214,6 +263,46 @@ def run_layer_coop(
         "client_log": str(client_log.relative_to(out_dir)),
         "server_log": str(server_log.relative_to(out_dir)),
     }
+
+
+def run_phone_full(
+    *,
+    android_dir: str,
+    android_model: str,
+    tokens: int,
+    threads: int,
+    out_dir: Path,
+    label: str,
+    timeout_s: float,
+) -> dict[str, Any]:
+    log_path = out_dir / f"{label}_phone_full.log"
+    cmd = (
+        f"cd {shlex.quote(android_dir)} && "
+        f"LD_LIBRARY_PATH=. LAYER_COOP_CPU_MASK=0xff "
+        f"taskset -a ff ./layer_tail_local_bench {shlex.quote(android_model)} {tokens} {threads} full_token"
+    )
+    started = time.time()
+    try:
+        completed = adb(["shell", cmd], timeout_s=timeout_s)
+        output = completed.stdout
+        status = "ok" if completed.returncode == 0 else f"phone_rc_{completed.returncode}"
+    except subprocess.TimeoutExpired as exc:
+        output = exc.stdout if isinstance(exc.stdout, str) else ""
+        status = "phone_timeout"
+    log_path.write_text(output, errors="replace")
+    match = PHONE_FULL_RE.search(output)
+    row: dict[str, Any] = {
+        "status": status,
+        "elapsed_s": time.time() - started,
+        "server_log": str(log_path.relative_to(out_dir)),
+    }
+    if match:
+        for key, value in match.groupdict().items():
+            row[key] = int(value) if key == "generated" else float(value)
+        row["generation_decode_ms"] = row.get("generation_decode_ms")
+    elif status == "ok":
+        row["status"] = "missing_phone_full"
+    return row
 
 
 def median(values: list[float]) -> float | None:
@@ -296,6 +385,7 @@ def main() -> int:
     parser.add_argument("--android-dir", default="/data/local/tmp/CE_Ada")
     parser.add_argument("--android-model", default="./qwen.q4_0.gguf")
     parser.add_argument("--adb-serial", default="", help="ADB serial for the Android phone. Use this when an emulator is also connected.")
+    parser.add_argument("--adb-port", default="5038", help="ADB server port.")
     parser.add_argument("--pc-host", default="10.126.59.25")
     parser.add_argument("--tokens", type=int, default=32)
     parser.add_argument("--coop-threads", type=int, default=8, help="Thread count passed to layer_coop_client/server.")
@@ -305,9 +395,13 @@ def main() -> int:
     parser.add_argument("--skip-offload", action="store_true")
     parser.add_argument("--splits", type=lambda s: [int(x) for x in s.split(",") if x], help="Override layer-coop split M candidates.")
     parser.add_argument("--base-port", type=int, default=18800)
+    parser.add_argument("--load-workers-per-core", type=int, default=1)
+    parser.add_argument("--load-method", default="matrixprod")
+    parser.add_argument("--include-phone-full", action="store_true", help="Benchmark full no-SVD execution on the Android phone as an edge_end candidate.")
     args = parser.parse_args()
-    global ADB_SERIAL
+    global ADB_SERIAL, ADB_PORT
     ADB_SERIAL = args.adb_serial
+    ADB_PORT = str(args.adb_port)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     scenarios = json.loads(args.scenarios_json.read_text()) if args.scenarios_json else scenario_defaults()
@@ -325,7 +419,13 @@ def main() -> int:
         split_candidates = [] if args.skip_offload else choose_split_candidates(cpus, loads, args.splits)
         for rep in range(args.repeats):
             print(f"== {scenario} rep={rep} baseline/major/offload ==", flush=True)
-            load_procs = start_heterogeneous_load(load_cgroup, cpus, loads)
+            load_procs = start_heterogeneous_load(
+                load_cgroup,
+                cpus,
+                loads,
+                workers_per_core=max(1, args.load_workers_per_core),
+                method=args.load_method,
+            )
             try:
                 base = decode_once(args.decode_binary, args.q4_model, run_cgroup, cpus, args.tokens, args.timeout_s)
                 base.update({
@@ -365,6 +465,23 @@ def main() -> int:
                     row.update({
                         "scenario": scenario, "repeat": rep, "policy": "edge_end_no_svd",
                         "detail": f"M={split_m};PC=[0,{split_m});Phone=[{split_m},28)",
+                        "cpus": cpu_spec(cpus), "loads": ",".join(map(str, loads)),
+                    })
+                    raw_rows.append(row)
+
+                if args.include_phone_full:
+                    row = run_phone_full(
+                        android_dir=args.android_dir,
+                        android_model=args.android_model,
+                        tokens=args.tokens,
+                        threads=args.coop_threads,
+                        out_dir=args.out_dir,
+                        label=f"{scenario}_r{rep}_phone_full",
+                        timeout_s=args.timeout_s,
+                    )
+                    row.update({
+                        "scenario": scenario, "repeat": rep, "policy": "edge_end_no_svd",
+                        "detail": "M=0;Phone=[0,28);PC=empty",
                         "cpus": cpu_spec(cpus), "loads": ",".join(map(str, loads)),
                     })
                     raw_rows.append(row)

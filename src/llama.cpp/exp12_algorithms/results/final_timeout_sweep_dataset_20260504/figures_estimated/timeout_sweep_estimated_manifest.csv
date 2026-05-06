@@ -1,0 +1,2 @@
+png,pdf,source_csv,data_kind
+/home/tianruiming/CE_ADA_LLAMA/src/llama.cpp/exp12_algorithms/results/final_timeout_sweep_dataset_20260504/figures_estimated/timeout_sweep_quad_baseline_line_estimated.png,/home/tianruiming/CE_ADA_LLAMA/src/llama.cpp/exp12_algorithms/results/final_timeout_sweep_dataset_20260504/figures_estimated/timeout_sweep_quad_baseline_line_estimated.pdf,/home/tianruiming/CE_ADA_LLAMA/src/llama.cpp/exp12_algorithms/results/final_timeout_sweep_dataset_20260504/plot_timeout_sweep_estimated.csv,estimated_adjusted_for_visualization

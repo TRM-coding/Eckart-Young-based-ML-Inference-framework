@@ -1,0 +1,746 @@
+scenario,repeat,policy,detail,status,cpus,loads,decode_tok_s,generation_decode_ms,generated,steady_decode_ms,prefix_decode_ms,server_decode_ms,network_wait_ms,prefill_decode_ms,elapsed_s,client_log,server_log,output_tail
+2occ_target2x_r2_01,0,baseline_no_svd,"60,61,62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","55,95,0,0,0,0,0,0",5.18785,6168.26,,,,,,1891.5,9.193885564804077,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=8 batch=8
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 5.18785 tokens/s (32 tokens in 6.16826 s of llama_decode)
+End-to-end throughput: 5.17879 tokens/s (32 tokens in 6.17905 s)
+[decode-stage-profile] model_load=874.254 ms context_create=62.5273 ms tokenize=0.86545 ms prefill_decode=1891.5 ms generation_decode=6168.26 ms generation_total=6179.05 ms program_total=9023.69 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=2060.628 ms ffn_total=2057.555 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_01,0,major_only_no_svd,"p=4;major=62,63,64,65",ok,"60,61,62,63,64,65,66,67","55,95,0,0,0,0,0,0",24.6046,1300.57,,,,,,52.0144,2.407395601272583,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=4 batch=4
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 24.6046 tokens/s (32 tokens in 1.30057 s of llama_decode)
+End-to-end throughput: 24.4112 tokens/s (32 tokens in 1.31087 s)
+[decode-stage-profile] model_load=799.571 ms context_create=52.9541 ms tokenize=0.441969 ms prefill_decode=52.0144 ms generation_decode=1300.57 ms generation_total=1310.87 ms program_total=2231.11 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=15.774 ms ffn_total=905.863 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_01,0,major_only_no_svd,"p=6;major=62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","55,95,0,0,0,0,0,0",43.0715,742.951,,,,,,36.5683,1.8784751892089844,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=6 batch=6
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 43.0715 tokens/s (32 tokens in 0.742951 s of llama_decode)
+End-to-end throughput: 42.4896 tokens/s (32 tokens in 0.753126 s)
+[decode-stage-profile] model_load=870.324 ms context_create=44.7168 ms tokenize=0.447918 ms prefill_decode=36.5683 ms generation_decode=742.951 ms generation_total=753.126 ms program_total=1715.18 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=15.073 ms ffn_total=480.567 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_01,0,major_only_no_svd,"p=7;major=62,63,64,65,66,67,60",ok,"60,61,62,63,64,65,66,67","55,95,0,0,0,0,0,0",42.2269,757.81,,,,,,207.942,1.960752248764038,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=7 batch=7
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 42.2269 tokens/s (32 tokens in 0.75781 s of llama_decode)
+End-to-end throughput: 41.6061 tokens/s (32 tokens in 0.769118 s)
+[decode-stage-profile] model_load=751.721 ms context_create=55.3157 ms tokenize=0.450436 ms prefill_decode=207.942 ms generation_decode=757.81 ms generation_total=769.118 ms program_total=1799.09 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=74.903 ms ffn_total=493.634 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_02,0,baseline_no_svd,"60,61,62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","60,95,0,0,0,0,0,0",42.4279,754.221,,,,,,130.095,1.9096684455871582,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=8 batch=8
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 42.4279 tokens/s (32 tokens in 0.754221 s of llama_decode)
+End-to-end throughput: 41.8314 tokens/s (32 tokens in 0.764976 s)
+[decode-stage-profile] model_load=792.552 ms context_create=53.3605 ms tokenize=0.441449 ms prefill_decode=130.095 ms generation_decode=754.221 ms generation_total=764.976 ms program_total=1756.93 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=67.765 ms ffn_total=508.822 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_02,0,major_only_no_svd,"p=4;major=62,63,64,65",ok,"60,61,62,63,64,65,66,67","60,95,0,0,0,0,0,0",25.8025,1240.19,,,,,,48.6668,2.3748891353607178,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=4 batch=4
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 25.8025 tokens/s (32 tokens in 1.24019 s of llama_decode)
+End-to-end throughput: 25.5853 tokens/s (32 tokens in 1.25072 s)
+[decode-stage-profile] model_load=802.017 ms context_create=54.8 ms tokenize=0.430382 ms prefill_decode=48.6668 ms generation_decode=1240.19 ms generation_total=1250.72 ms program_total=2174.45 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=17.312 ms ffn_total=846.969 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_02,0,major_only_no_svd,"p=6;major=62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","60,95,0,0,0,0,0,0",32.4616,985.779,,,,,,37.998,2.2949137687683105,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=6 batch=6
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 32.4616 tokens/s (32 tokens in 0.985779 s of llama_decode)
+End-to-end throughput: 32.1005 tokens/s (32 tokens in 0.99687 s)
+[decode-stage-profile] model_load=979.845 ms context_create=64.7274 ms tokenize=0.748075 ms prefill_decode=37.998 ms generation_decode=985.779 ms generation_total=996.87 ms program_total=2095.85 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=20.285 ms ffn_total=655.591 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_02,0,major_only_no_svd,"p=7;major=62,63,64,65,66,67,60",ok,"60,61,62,63,64,65,66,67","60,95,0,0,0,0,0,0",42.4908,753.105,,,,,,33.988,1.767033338546753,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=7 batch=7
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 42.4908 tokens/s (32 tokens in 0.753105 s of llama_decode)
+End-to-end throughput: 41.9125 tokens/s (32 tokens in 0.763495 s)
+[decode-stage-profile] model_load=755.618 ms context_create=46.882 ms tokenize=0.44578 ms prefill_decode=33.988 ms generation_decode=753.105 ms generation_total=763.495 ms program_total=1610.38 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=18.401 ms ffn_total=481.084 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_03,0,baseline_no_svd,"60,61,62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","65,95,0,0,0,0,0,0",16.8531,1898.76,,,,,,998.394,3.941232204437256,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=8 batch=8
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 16.8531 tokens/s (32 tokens in 1.89876 s of llama_decode)
+End-to-end throughput: 16.7553 tokens/s (32 tokens in 1.90984 s)
+[decode-stage-profile] model_load=789.785 ms context_create=53.3248 ms tokenize=0.447127 ms prefill_decode=998.394 ms generation_decode=1898.76 ms generation_total=1909.84 ms program_total=3767.31 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=572.196 ms ffn_total=817.142 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_03,0,major_only_no_svd,"p=4;major=62,63,64,65",ok,"60,61,62,63,64,65,66,67","65,95,0,0,0,0,0,0",25.6707,1246.56,,,,,,50.8552,2.6149141788482666,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=4 batch=4
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 25.6707 tokens/s (32 tokens in 1.24656 s of llama_decode)
+End-to-end throughput: 25.4432 tokens/s (32 tokens in 1.2577 s)
+[decode-stage-profile] model_load=1003.66 ms context_create=63.809 ms tokenize=0.832869 ms prefill_decode=50.8552 ms generation_decode=1246.56 ms generation_total=1257.7 ms program_total=2392.33 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=18.258 ms ffn_total=845.873 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_03,0,major_only_no_svd,"p=6;major=62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","65,95,0,0,0,0,0,0",33.5629,953.433,,,,,,46.0393,2.2722907066345215,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=6 batch=6
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 33.5629 tokens/s (32 tokens in 0.953433 s of llama_decode)
+End-to-end throughput: 33.169 tokens/s (32 tokens in 0.964755 s)
+[decode-stage-profile] model_load=983.79 ms context_create=68.0616 ms tokenize=0.818484 ms prefill_decode=46.0393 ms generation_decode=953.433 ms generation_total=964.755 ms program_total=2079.45 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=20.285 ms ffn_total=631.943 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_03,0,major_only_no_svd,"p=7;major=62,63,64,65,66,67,60",ok,"60,61,62,63,64,65,66,67","65,95,0,0,0,0,0,0",43.3371,738.397,,,,,,102.678,1.9097962379455566,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=7 batch=7
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 43.3371 tokens/s (32 tokens in 0.738397 s of llama_decode)
+End-to-end throughput: 42.6526 tokens/s (32 tokens in 0.750248 s)
+[decode-stage-profile] model_load=840.264 ms context_create=55.4401 ms tokenize=0.820353 ms prefill_decode=102.678 ms generation_decode=738.397 ms generation_total=750.248 ms program_total=1759.8 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=52.408 ms ffn_total=467.653 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_04,0,baseline_no_svd,"60,61,62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","70,95,0,0,0,0,0,0",46.6707,685.655,,,,,,197.509,1.9459738731384277,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=8 batch=8
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 46.6707 tokens/s (32 tokens in 0.685655 s of llama_decode)
+End-to-end throughput: 45.9096 tokens/s (32 tokens in 0.697022 s)
+[decode-stage-profile] model_load=778.133 ms context_create=55.478 ms tokenize=0.430384 ms prefill_decode=197.509 ms generation_decode=685.655 ms generation_total=697.022 ms program_total=1743.87 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=80.403 ms ffn_total=420.509 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_04,0,major_only_no_svd,"p=4;major=62,63,64,65",ok,"60,61,62,63,64,65,66,67","70,95,0,0,0,0,0,0",31.2358,1024.47,,,,,,46.8113,2.075671911239624,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=4 batch=4
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 31.2358 tokens/s (32 tokens in 1.02447 s of llama_decode)
+End-to-end throughput: 30.9295 tokens/s (32 tokens in 1.03461 s)
+[decode-stage-profile] model_load=763.368 ms context_create=55.2684 ms tokenize=0.447273 ms prefill_decode=46.8113 ms generation_decode=1024.47 ms generation_total=1034.61 ms program_total=1916.6 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=15.702 ms ffn_total=681.288 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_04,0,major_only_no_svd,"p=6;major=62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","70,95,0,0,0,0,0,0",41.1757,777.158,,,,,,41.9466,1.8537988662719727,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=6 batch=6
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 41.1757 tokens/s (32 tokens in 0.777158 s of llama_decode)
+End-to-end throughput: 40.606 tokens/s (32 tokens in 0.788062 s)
+[decode-stage-profile] model_load=773.51 ms context_create=52.7071 ms tokenize=0.447906 ms prefill_decode=41.9466 ms generation_decode=777.158 ms generation_total=788.062 ms program_total=1670.05 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=17.559 ms ffn_total=499.907 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_04,0,major_only_no_svd,"p=7;major=62,63,64,65,66,67,60",ok,"60,61,62,63,64,65,66,67","70,95,0,0,0,0,0,0",43.0127,743.965,,,,,,39.0542,1.7940459251403809,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=7 batch=7
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 43.0127 tokens/s (32 tokens in 0.743965 s of llama_decode)
+End-to-end throughput: 42.3875 tokens/s (32 tokens in 0.75494 s)
+[decode-stage-profile] model_load=771.077 ms context_create=54.1107 ms tokenize=0.432048 ms prefill_decode=39.0542 ms generation_decode=743.965 ms generation_total=754.94 ms program_total=1634.85 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=19.140 ms ffn_total=488.448 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_05,0,baseline_no_svd,"60,61,62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","60,100,0,0,0,0,0,0",14.3629,2227.96,,,,,,2050.94,5.283629655838013,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=8 batch=8
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 14.3629 tokens/s (32 tokens in 2.22796 s of llama_decode)
+End-to-end throughput: 14.295 tokens/s (32 tokens in 2.23855 s)
+[decode-stage-profile] model_load=764.49 ms context_create=47.7609 ms tokenize=0.449567 ms prefill_decode=2050.94 ms generation_decode=2227.96 ms generation_total=2238.55 ms program_total=5113.42 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=824.875 ms ffn_total=977.652 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_05,0,major_only_no_svd,"p=4;major=62,63,64,65",ok,"60,61,62,63,64,65,66,67","60,100,0,0,0,0,0,0",31.3904,1019.42,,,,,,49.5423,2.078807830810547,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=4 batch=4
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 31.3904 tokens/s (32 tokens in 1.01942 s of llama_decode)
+End-to-end throughput: 31.0672 tokens/s (32 tokens in 1.03003 s)
+[decode-stage-profile] model_load=765.22 ms context_create=56.2329 ms tokenize=0.443069 ms prefill_decode=49.5423 ms generation_decode=1019.42 ms generation_total=1030.03 ms program_total=1918.2 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=15.843 ms ffn_total=677.539 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_05,0,major_only_no_svd,"p=6;major=62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","60,100,0,0,0,0,0,0",37.2943,858.041,,,,,,38.7344,1.9035048484802246,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=6 batch=6
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 37.2943 tokens/s (32 tokens in 0.858041 s of llama_decode)
+End-to-end throughput: 36.8482 tokens/s (32 tokens in 0.868428 s)
+[decode-stage-profile] model_load=769.037 ms context_create=53.5122 ms tokenize=0.440085 ms prefill_decode=38.7344 ms generation_decode=858.041 ms generation_total=868.428 ms program_total=1745.53 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=18.548 ms ffn_total=557.773 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+2occ_target2x_r2_05,0,major_only_no_svd,"p=7;major=62,63,64,65,66,67,60",ok,"60,61,62,63,64,65,66,67","60,100,0,0,0,0,0,0",24.4779,1307.3,,,,,,187.774,2.644280433654785,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=7 batch=7
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 24.4779 tokens/s (32 tokens in 1.3073 s of llama_decode)
+End-to-end throughput: 24.2805 tokens/s (32 tokens in 1.31793 s)
+[decode-stage-profile] model_load=883.162 ms context_create=51.0417 ms tokenize=0.444953 ms prefill_decode=187.774 ms generation_decode=1307.3 ms generation_total=1317.93 ms program_total=2451.17 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=225.250 ms ffn_total=621.522 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_01,0,baseline_no_svd,"60,61,62,63,64,65,66,67",timeout,"60,61,62,63,64,65,66,67","60,70,90,100,0,0,0,0",,,,,,,,,120.10385704040527,,,
+4occ_target2x_r2_01,0,major_only_no_svd,"p=4;major=64,65,66,67",ok,"60,61,62,63,64,65,66,67","60,70,90,100,0,0,0,0",8.99803,3556.34,,,,,,9043.82,13.771645784378052,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=4 batch=4
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 8.99803 tokens/s (32 tokens in 3.55634 s of llama_decode)
+End-to-end throughput: 8.97129 tokens/s (32 tokens in 3.56693 s)
+[decode-stage-profile] model_load=917.44 ms context_create=55.8089 ms tokenize=0.469969 ms prefill_decode=9043.82 ms generation_decode=3556.34 ms generation_total=3566.93 ms program_total=13600.7 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=1955.480 ms ffn_total=2949.973 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_01,0,major_only_no_svd,"p=6;major=64,65,66,67,60,61",ok,"60,61,62,63,64,65,66,67","60,70,90,100,0,0,0,0",39.2703,814.866,,,,,,195.845,2.040541648864746,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=6 batch=6
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 39.2703 tokens/s (32 tokens in 0.814866 s of llama_decode)
+End-to-end throughput: 38.7504 tokens/s (32 tokens in 0.825798 s)
+[decode-stage-profile] model_load=777.365 ms context_create=42.9357 ms tokenize=0.44534 ms prefill_decode=195.845 ms generation_decode=814.866 ms generation_total=825.798 ms program_total=1852.38 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=63.723 ms ffn_total=524.126 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_01,0,major_only_no_svd,"p=7;major=64,65,66,67,60,61,62",ok,"60,61,62,63,64,65,66,67","60,70,90,100,0,0,0,0",9.49481,3370.26,,,,,,1723.55,6.0799524784088135,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=7 batch=7
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 9.49481 tokens/s (32 tokens in 3.37026 s of llama_decode)
+End-to-end throughput: 9.46495 tokens/s (32 tokens in 3.38089 s)
+[decode-stage-profile] model_load=755.818 ms context_create=43.1251 ms tokenize=0.447927 ms prefill_decode=1723.55 ms generation_decode=3370.26 ms generation_total=3380.89 ms program_total=5913.93 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=1146.227 ms ffn_total=1213.289 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_02,0,baseline_no_svd,"60,61,62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","65,75,90,100,0,0,0,0",0.455353,70275.1,,,,,,9774.36,81.05894660949707,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=8 batch=8
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 0.455353 tokens/s (32 tokens in 70.2751 s of llama_decode)
+End-to-end throughput: 0.455283 tokens/s (32 tokens in 70.286 s)
+[decode-stage-profile] model_load=759.259 ms context_create=42.3456 ms tokenize=0.449079 ms prefill_decode=9774.36 ms generation_decode=70275.1 ms generation_total=70286 ms program_total=80872.1 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=24361.607 ms ffn_total=16497.076 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_02,0,major_only_no_svd,"p=4;major=64,65,66,67",ok,"60,61,62,63,64,65,66,67","65,75,90,100,0,0,0,0",28.2983,1130.81,,,,,,50.415,2.2133901119232178,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=4 batch=4
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 28.2983 tokens/s (32 tokens in 1.13081 s of llama_decode)
+End-to-end throughput: 28.0393 tokens/s (32 tokens in 1.14125 s)
+[decode-stage-profile] model_load=772.677 ms context_create=58.2317 ms tokenize=0.443342 ms prefill_decode=50.415 ms generation_decode=1130.81 ms generation_total=1141.25 ms program_total=2038.6 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=16.989 ms ffn_total=755.982 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_02,0,major_only_no_svd,"p=6;major=64,65,66,67,60,61",ok,"60,61,62,63,64,65,66,67","65,75,90,100,0,0,0,0",35.3718,904.676,,,,,,117.892,2.047483444213867,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=6 batch=6
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 35.3718 tokens/s (32 tokens in 0.904676 s of llama_decode)
+End-to-end throughput: 34.9517 tokens/s (32 tokens in 0.915548 s)
+[decode-stage-profile] model_load=769.392 ms context_create=54.9992 ms tokenize=0.44695 ms prefill_decode=117.892 ms generation_decode=904.676 ms generation_total=915.548 ms program_total=1873.65 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=61.637 ms ffn_total=590.159 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_02,0,major_only_no_svd,"p=7;major=64,65,66,67,60,61,62",ok,"60,61,62,63,64,65,66,67","65,75,90,100,0,0,0,0",40.7571,785.139,,,,,,7485.58,9.435357809066772,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=7 batch=7
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 40.7571 tokens/s (32 tokens in 0.785139 s of llama_decode)
+End-to-end throughput: 40.1735 tokens/s (32 tokens in 0.796545 s)
+[decode-stage-profile] model_load=911.521 ms context_create=42.7607 ms tokenize=0.444173 ms prefill_decode=7485.58 ms generation_decode=785.139 ms generation_total=796.545 ms program_total=9247.07 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=1216.051 ms ffn_total=1237.721 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_03,0,baseline_no_svd,"60,61,62,63,64,65,66,67",ok,"60,61,62,63,64,65,66,67","70,80,90,100,0,0,0,0",0.482353,66341.4,,,,,,10089.0,77.52681279182434,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=8 batch=8
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 0.482353 tokens/s (32 tokens in 66.3414 s of llama_decode)
+End-to-end throughput: 0.482275 tokens/s (32 tokens in 66.3521 s)
+[decode-stage-profile] model_load=824.062 ms context_create=42.1642 ms tokenize=0.44404 ms prefill_decode=10089 ms generation_decode=66341.4 ms generation_total=66352.1 ms program_total=77318.1 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=22836.015 ms ffn_total=15678.637 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_03,0,major_only_no_svd,"p=4;major=64,65,66,67",ok,"60,61,62,63,64,65,66,67","70,80,90,100,0,0,0,0",30.1942,1059.81,,,,,,48.5596,2.214705228805542,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=4 batch=4
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 30.1942 tokens/s (32 tokens in 1.05981 s of llama_decode)
+End-to-end throughput: 29.888 tokens/s (32 tokens in 1.07067 s)
+[decode-stage-profile] model_load=827.359 ms context_create=41.8106 ms tokenize=0.444146 ms prefill_decode=48.5596 ms generation_decode=1059.81 ms generation_total=1070.67 ms program_total=1998.82 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=14.570 ms ffn_total=707.579 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_03,0,major_only_no_svd,"p=6;major=64,65,66,67,60,61",ok,"60,61,62,63,64,65,66,67","70,80,90,100,0,0,0,0",37.9583,843.031,,,,,,119.545,2.0407655239105225,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=6 batch=6
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 37.9583 tokens/s (32 tokens in 0.843031 s of llama_decode)
+End-to-end throughput: 37.4586 tokens/s (32 tokens in 0.854278 s)
+[decode-stage-profile] model_load=798.312 ms context_create=45.2176 ms tokenize=0.448621 ms prefill_decode=119.545 ms generation_decode=843.031 ms generation_total=854.278 ms program_total=1828.35 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=67.752 ms ffn_total=531.701 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"
+4occ_target2x_r2_03,0,major_only_no_svd,"p=7;major=64,65,66,67,60,61,62",ok,"60,61,62,63,64,65,66,67","70,80,90,100,0,0,0,0",43.3422,738.311,,,,,,191.368,1.9621632099151611,,,"llama_context: graph splits = 1
+attach_threadpool: call
+threads: decode=7 batch=7
+prompt tokens: 4
+running one forward pass (llama_decode) ...
+Top-5 next-token candidates:
+  id=11 logit=21.0211 piece="",""
+  id=3837 logit=19.3304 piece=""，""
+  id=1052 logit=19.1368 piece="" there""
+  id=304 logit=19.024 piece="" in""
+  id=264 logit=18.1601 piece="" a""
+Autoregressive generation:
+Generated text: , there was a little girl named Lily. She lived in a small village with her family. One day, Lily's mom told her about a magical forest that
+Decode-only throughput: 43.3422 tokens/s (32 tokens in 0.738311 s of llama_decode)
+End-to-end throughput: 42.7057 tokens/s (32 tokens in 0.749314 s)
+[decode-stage-profile] model_load=764.692 ms context_create=57.256 ms tokenize=0.444095 ms prefill_decode=191.368 ms generation_decode=738.311 ms generation_total=749.314 ms program_total=1778.25 ms
+[svd-local-op-profile] up_ops=0 gate_ops=0 down_ops=0 up_total=0.000 ms gate_total=0.000 ms down_total=0.000 ms up_v=0.000 ms gate_v=0.000 ms down_v=0.000 ms up_u=0.000 ms gate_u=0.000 ms down_u=0.000 ms
+[svd-local-stage-profile] attention_total=71.207 ms ffn_total=478.659 ms ffn_svd_total=0.000 ms ffn_svd_v=0.000 ms ffn_svd_u=0.000 ms
+[svd-offload-zero-profile] up_finish=0 up_cache=0 up_no_request=0 gate_finish=0 gate_cache=0 gate_no_request=0 down_finish=0 down_cache=0 down_no_request=0 other_finish=0 other_cache=0 other_no_request=0
+[svd-local-timeout-profile] up_keep=0 up_drop=0 up_wait=0.000 ms gate_keep=0 gate_drop=0 gate_wait=0.000 ms down_keep=0 down_drop=0 down_wait=0.000 ms other_keep=0 other_drop=0 other_wait=0.000 ms
+[svd-offload-client] up_gate_req=0 down_req=0 other_mat_req=0 ffn_req=0 gate_cache_hits=0 gate_cache_checks=0 miss_invalid=0 miss_layer=0 miss_rank=0 miss_hash=0 miss_output=0 miss_data=0 send_up_gate=0.000 ms send_down=0.000 ms send_other=0.000 ms send_ffn=0.000 ms wait_up_gate=0.000 ms wait_down=0.000 ms wait_other=0.000 ms wait_ffn=0.000 ms
+[svd-offload-client-stage-profile] rpc_send_total=0.000 ms rpc_wait_total=0.000 ms
+[svd-offload-client-debug] finish_fail_up_gate=0 finish_fail_down=0 finish_fail_other=0 finish_fail_ffn=0 cache_take_fail_up=0 cache_take_fail_gate=0 recv_up_sum_abs=0.000000e+00 recv_up_max_abs=0.000000e+00 recv_up_zero=0 recv_gate_sum_abs=0.000000e+00 recv_gate_max_abs=0.000000e+00 recv_gate_zero=0 recv_down_sum_abs=0.000000e+00 recv_down_max_abs=0.000000e+00 recv_down_zero=0 recv_other_sum_abs=0.000000e+00 recv_other_max_abs=0.000000e+00 recv_other_zero=0 recv_ffn_sum_abs=0.000000e+00 recv_ffn_max_abs=0.000000e+00 recv_ffn_zero=0
+SUCCEED (one forward pass done)"

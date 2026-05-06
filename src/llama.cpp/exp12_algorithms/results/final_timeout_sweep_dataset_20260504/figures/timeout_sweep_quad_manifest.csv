@@ -1,0 +1,2 @@
+png,pdf,source_csv,baseline_style,panels
+/home/tianruiming/CE_ADA_LLAMA/src/llama.cpp/exp12_algorithms/results/final_timeout_sweep_dataset_20260504/figures/timeout_sweep_quad_baseline_line.png,/home/tianruiming/CE_ADA_LLAMA/src/llama.cpp/exp12_algorithms/results/final_timeout_sweep_dataset_20260504/figures/timeout_sweep_quad_baseline_line.pdf,/home/tianruiming/CE_ADA_LLAMA/src/llama.cpp/exp12_algorithms/results/final_timeout_sweep_dataset_20260504/plot_timeout_sweep_aggregate.csv,red_dashed_horizontal_line,"2occ,4occ,6occ,8occ"

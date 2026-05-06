@@ -7,7 +7,7 @@ from matplotlib import font_manager
 
 
 OUT_DIR = Path("/home/tianruiming/CE_ADA_LLAMA/src/llama.cpp/datas/llama_svd_conv")
-FONT_PATH = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"
+FONT_PATH = "/usr/share/fonts/opentype/noto/NotoSerifCJK-Regular.ttc"
 FONT_PROP = font_manager.FontProperties(fname=FONT_PATH, size=18)
 
 font_manager.fontManager.addfont(FONT_PATH)
@@ -16,13 +16,17 @@ plt.rcParams["font.size"] = 18
 plt.rcParams["axes.unicode_minus"] = False
 
 COLORS = {
-    "ggml": "#4E79A7",
-    "pytorch": "#59A14F",
-    "onednn": "#E15759",
+    "ggml": "#3B5B92",
+    "pytorch": "#2A9D8F",
+    "onednn": "#E76F51",
     "im2col_svd": "#9C755F",
     "fold_svd": "#F28E2B",
     "speedup": "#2F6F73",
 }
+
+
+def font_prop(size, weight=None):
+    return font_manager.FontProperties(fname=FONT_PATH, size=size, weight=weight)
 
 
 def annotate_grouped(ax, xs, values, dx):
@@ -131,6 +135,103 @@ def make_model_chart():
     plt.close(fig)
 
 
+def make_operator_model_combined_chart():
+    op_categories = ["7x7", "3x3", "1x1"]
+    ggml = np.array([9.43745, 3.61984, 1.23041])
+    pytorch = np.array([1.415657, 0.704772, 0.449512])
+    onednn = np.array([0.683422, 0.629792, 0.294949])
+
+    model_labels = ["llama.cpp", "PyTorch", "oneDNN"]
+    model_values = np.array([112.322, 29.158629151061177, 39.6674])
+
+    fig, axes = plt.subplots(1, 2, figsize=(17.5, 7.8), dpi=220)
+    fig.patch.set_facecolor("white")
+
+    for ax in axes:
+        ax.set_facecolor("white")
+        ax.set_box_aspect(0.78)
+
+    ax = axes[0]
+    x = np.arange(len(op_categories))
+    width = 0.18
+    offsets = np.array([-0.26, 0.0, 0.26])
+
+    ax.bar(x + offsets[0], ggml, width=width, color=COLORS["ggml"], label="llama.cpp im2col Conv")
+    ax.bar(x + offsets[1], pytorch, width=width, color=COLORS["pytorch"], label="PyTorch Conv")
+    ax.bar(x + offsets[2], onednn, width=width, color=COLORS["onednn"], label="oneDNN Conv")
+
+    ax.set_title("(a) 卷积算子调用耗时", pad=10, fontproperties=font_prop(30, "bold"))
+    ax.set_ylabel("耗时 / ms", fontproperties=font_prop(28))
+    ax.set_xlabel("典型卷积尺寸", fontproperties=font_prop(28))
+    ax.set_xticks(x)
+    ax.set_xticklabels(op_categories, fontproperties=font_prop(28))
+    ax.set_ylim(0, 10.6)
+    base_style(ax)
+    ax.tick_params(axis="both", labelsize=28, width=1.0, length=5)
+
+    for offset, series in zip(offsets, [ggml, pytorch, onednn]):
+        for xpos, value in zip(x + offset, series):
+            ax.text(
+                xpos,
+                value + 0.18,
+                f"{value:.2f}",
+                ha="center",
+                va="bottom",
+                fontsize=16,
+                color="#2F2F2F",
+                fontproperties=font_prop(16),
+            )
+
+    ax = axes[1]
+    x = np.arange(len(model_labels))
+    bars = ax.bar(
+        x,
+        model_values,
+        width=0.56,
+        color=[COLORS["ggml"], COLORS["pytorch"], COLORS["onednn"]],
+    )
+
+    ax.set_title("(b) 模型推理速度", pad=10, fontproperties=font_prop(30, "bold"))
+    ax.set_ylabel("单次前向传播耗时 / ms", fontproperties=font_prop(28))
+    ax.set_xlabel("推理实现", fontproperties=font_prop(28))
+    ax.set_xticks(x)
+    ax.set_xticklabels(model_labels, fontproperties=font_prop(28))
+    ax.set_ylim(0, 124)
+    base_style(ax)
+    ax.tick_params(axis="both", labelsize=28, width=1.0, length=5)
+
+    for bar, value in zip(bars, model_values):
+        ax.text(
+            bar.get_x() + bar.get_width() / 2.0,
+            value + 2.0,
+            f"{value:.2f}",
+            ha="center",
+            va="bottom",
+            fontsize=16,
+            color="#2F2F2F",
+            fontproperties=font_prop(16),
+        )
+
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(
+        handles,
+        labels,
+        frameon=False,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.0),
+        ncol=3,
+        fontsize=26,
+        prop=font_prop(26),
+        columnspacing=1.1,
+        handlelength=1.2,
+    )
+
+    fig.subplots_adjust(left=0.075, right=0.985, bottom=0.20, top=0.76, wspace=0.14)
+    fig.savefig(OUT_DIR / "operator_model_combined_comparison.png", bbox_inches="tight")
+    fig.savefig(OUT_DIR / "operator_model_combined_comparison.pdf", bbox_inches="tight")
+    plt.close(fig)
+
+
 def make_fold_unfold_chart():
     categories = ["1x1", "3x3", "5x5", "7x7"]
     im2col_svd = np.array([1.979688, 6.782098, 16.966614, 34.799834])
@@ -194,6 +295,7 @@ def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     make_operator_chart()
     make_model_chart()
+    make_operator_model_combined_chart()
     make_fold_unfold_chart()
 
 

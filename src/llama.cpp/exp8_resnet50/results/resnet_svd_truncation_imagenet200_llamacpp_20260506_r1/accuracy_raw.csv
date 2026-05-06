@@ -1,0 +1,10 @@
+truncation,keep_ratio,correct,total,bad,top1,elapsed_s,predictions
+0.0,1.0,160,200,0,0.8,32.507688760757446,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/predictions_trunc00.csv
+0.1,0.9,146,200,0,0.73,95.90651941299438,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/predictions_trunc10.csv
+0.2,0.8,76,200,0,0.38,100.25597715377808,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/predictions_trunc20.csv
+0.3,0.7,10,200,0,0.05,85.49084711074829,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/predictions_trunc30.csv
+0.4,0.6,0,200,0,0.0,78.01563715934753,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/predictions_trunc40.csv
+0.5,0.5,0,200,0,0.0,73.8376030921936,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/predictions_trunc50.csv
+0.6,0.4,0,200,0,0.0,63.871224880218506,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/predictions_trunc60.csv
+0.7,0.30000000000000004,0,200,0,0.0,45.66142535209656,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/predictions_trunc70.csv
+0.8,0.19999999999999996,0,200,0,0.0,38.05101799964905,src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/predictions_trunc80.csv

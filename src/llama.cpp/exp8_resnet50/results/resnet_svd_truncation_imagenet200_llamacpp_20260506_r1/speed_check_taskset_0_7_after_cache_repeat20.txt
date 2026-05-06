@@ -1,0 +1,34 @@
+forward_ms_mean=1712.73	forward_ms_median=1755.66	forward_ms_min=1459.34	forward_ms_max=1884.23	repeats=20
+1	class_id=65	logit=6.25732	label=sea snake
+
+=== trunc=0.1 model=src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/models/resnet50-svd-trunc10-keep090-f32.gguf ===
+forward_ms_mean=2480.03	forward_ms_median=2534.88	forward_ms_min=2128.88	forward_ms_max=3063.28	repeats=20
+1	class_id=65	logit=0.589598	label=sea snake
+
+=== trunc=0.2 model=src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/models/resnet50-svd-trunc20-keep080-f32.gguf ===
+forward_ms_mean=2483.71	forward_ms_median=2560.16	forward_ms_min=2131.87	forward_ms_max=2783.41	repeats=20
+1	class_id=588	logit=1.92666	label=hamper
+
+=== trunc=0.3 model=src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/models/resnet50-svd-trunc30-keep070-f32.gguf ===
+forward_ms_mean=2414.38	forward_ms_median=2375.66	forward_ms_min=2198.02	forward_ms_max=2742.42	repeats=20
+1	class_id=846	logit=-0.552477	label=table lamp
+
+=== trunc=0.4 model=src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/models/resnet50-svd-trunc40-keep060-f32.gguf ===
+forward_ms_mean=1411.95	forward_ms_median=1307.06	forward_ms_min=1284.15	forward_ms_max=2413.21	repeats=20
+1	class_id=547	logit=149.864	label=electric locomotive
+
+=== trunc=0.5 model=src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/models/resnet50-svd-trunc50-keep050-f32.gguf ===
+forward_ms_mean=1315.76	forward_ms_median=1312.34	forward_ms_min=1288.06	forward_ms_max=1348.35	repeats=20
+1	class_id=547	logit=92.9194	label=electric locomotive
+
+=== trunc=0.6 model=src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/models/resnet50-svd-trunc60-keep040-f32.gguf ===
+forward_ms_mean=1314.16	forward_ms_median=1320.73	forward_ms_min=1164.39	forward_ms_max=1380.14	repeats=20
+1	class_id=294	logit=49.7922	label=brown bear, bruin, Ursus arctos
+
+=== trunc=0.7 model=src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/models/resnet50-svd-trunc70-keep030-f32.gguf ===
+forward_ms_mean=1317.5	forward_ms_median=1325.97	forward_ms_min=1153.41	forward_ms_max=1382.64	repeats=20
+1	class_id=858	logit=1.94903	label=tile roof
+
+=== trunc=0.8 model=src/llama.cpp/exp8_resnet50/results/resnet_svd_truncation_imagenet200_llamacpp_20260506_r1/models/resnet50-svd-trunc80-keep020-f32.gguf ===
+forward_ms_mean=1311.46	forward_ms_median=1315.22	forward_ms_min=1216.6	forward_ms_max=1344.95	repeats=20
+1	class_id=629	logit=6.13418	label=lipstick, lip rouge

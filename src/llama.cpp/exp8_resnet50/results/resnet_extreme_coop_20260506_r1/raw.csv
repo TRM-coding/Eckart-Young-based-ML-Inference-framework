@@ -1,0 +1,16 @@
+img_s,log,policy,prefix_ms,run_cpus,send_ms,server_log,server_ms,split,status,wait_ms
+0.38227907136767986,"forward_ms_mean=2615.89	forward_ms_median=2615.89	forward_ms_min=2615.89	forward_ms_max=2615.89	repeats=1
+1	class_id=65	logit=6.25732	label=sea snake
+",PC基线,,"60,61,62,63,64,65,66,67",,,,,ok,
+0.9186448151686633,"forward_ms_mean=1088.56	forward_ms_median=1088.56	forward_ms_min=1088.56	forward_ms_max=1088.56	repeats=1
+1	class_id=65	logit=6.25732	label=sea snake
+",No-Offloading 2核,,"66,67",,,,,ok,
+0.5675143439250427,"forward_ms_mean=1762.07	forward_ms_median=1762.07	forward_ms_min=1762.07	forward_ms_max=1762.07	repeats=1
+1	class_id=65	logit=6.25732	label=sea snake
+",No-Offloading 4核,,"64,65,66,67",,,,,ok,
+0.40757768430662883,"forward_ms_mean=2453.52	forward_ms_median=2453.52	forward_ms_min=2453.52	forward_ms_max=2453.52	repeats=1
+1	class_id=65	logit=6.25732	label=sea snake
+",No-Offloading 6核,,"62,63,64,65,66,67",,,,,ok,
+0.20178,coop_M12_client.log,协同推理 M=12,1929.94,,717.43,coop_M12_server.log,1078.73,12,ok,2308.52
+0.198369,coop_M14_client.log,协同推理 M=14,2343.12,,484.741,coop_M14_server.log,512.754,14,ok,2213.25
+0.327171,coop_M16_client.log,协同推理 M=16,2551.52,,255.874,coop_M16_server.log,3.97411,16,ok,249.111

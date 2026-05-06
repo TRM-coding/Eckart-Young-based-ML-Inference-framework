@@ -1,0 +1,13 @@
+label,load_pct,workers_per_core,method,prio_mode,policy,split_m,status,tok_s,ms_per_token,prefix_ms,server_ms,network_ms,generated,log,server_log
+normal_w1_load0,0,1,matrixprod,normal,pc_full,,ok,32.6371,,,,,,normal_w1_load0_pc_full.log,
+normal_w1_load0,0,1,matrixprod,normal,split,2,ok,10.7949,92.6362,97.5767,2436.23,430.268,32,normal_w1_load0_M2_client.log,normal_w1_load0_M2_server.log
+normal_w1_load0,0,1,matrixprod,normal,split,4,ok,22.3455,44.7516,139.102,879.514,413.34,32,normal_w1_load0_M4_client.log,normal_w1_load0_M4_server.log
+normal_w1_load80,80,1,matrixprod,normal,pc_full,,ok,0.394399,,,,,,normal_w1_load80_pc_full.log,
+normal_w1_load80,80,1,matrixprod,normal,split,2,ok,3.01573,331.594,6847.75,2022.73,1740.37,32,normal_w1_load80_M2_client.log,normal_w1_load80_M2_server.log
+normal_w1_load80,80,1,matrixprod,normal,split,4,ok,2.66139,375.743,8479.33,1856.66,1687.66,32,normal_w1_load80_M4_client.log,normal_w1_load80_M4_server.log
+normal_w1_load100,100,1,matrixprod,normal,pc_full,,ok,0.683202,,,,,,normal_w1_load100_pc_full.log,
+normal_w1_load100,100,1,matrixprod,normal,split,2,ok,10.7562,92.9692,492.619,1899.52,582.802,32,normal_w1_load100_M2_client.log,normal_w1_load100_M2_server.log
+normal_w1_load100,100,1,matrixprod,normal,split,4,ok,7.69936,129.881,2000.31,1346.26,809.545,32,normal_w1_load100_M4_client.log,normal_w1_load100_M4_server.log
+nice-20_w1_load0,0,1,matrixprod,nice-20,pc_full,,ok,51.8529,,,,,,nice-20_w1_load0_pc_full.log,
+nice-20_w1_load0,0,1,matrixprod,nice-20,split,2,ok,25.719,38.8817,90.4915,737.704,415.83,32,nice-20_w1_load0_M2_client.log,nice-20_w1_load0_M2_server.log
+nice-20_w1_load0,0,1,matrixprod,nice-20,split,4,ok,26.7079,37.4421,167.427,632.405,398.098,32,nice-20_w1_load0_M4_client.log,nice-20_w1_load0_M4_server.log

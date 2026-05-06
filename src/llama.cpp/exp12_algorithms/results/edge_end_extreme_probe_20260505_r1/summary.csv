@@ -1,0 +1,3 @@
+scenario,loads,baseline_tok_s,selected_policy,selected_detail,selected_tok_s,speedup_vs_baseline,ppl,ppl_note
+8c_probe_all_100,"100,100,100,100,100,100,100,100",29.4343,baseline_no_svd,,29.4343,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity
+8c_probe_ramp_hi,"80,90,90,100,100,100,100,100",30.7242,baseline_no_svd,,30.7242,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity

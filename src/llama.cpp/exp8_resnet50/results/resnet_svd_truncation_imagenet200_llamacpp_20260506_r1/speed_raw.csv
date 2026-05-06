@@ -1,0 +1,55 @@
+truncation,keep_ratio,status,output_tail,forward_ms_mean,forward_ms_median,repeat,images_s
+0.0,1.0,ok,"forward_ms_mean=51.9681	forward_ms_median=51.1033	forward_ms_min=50.4346	forward_ms_max=54.3114	repeats=10
+1	class_id=65	logit=6.25732	label=sea snake
+2	class_id=58	logit=-2.30732	label=water snake
+3	class_id=54	logit=-3.60407	label=hognose snake, puff adder, sand viper
+4	class_id=62	logit=-3.7006	label=rock python, rock snake, Python sebae
+5	class_id=67	logit=-4.34112	label=diamondback, diamondback rattlesnake, Crotalus adamanteus",51.9681,51.1033,10,19.242573809702492
+0.1,0.9,ok,"forward_ms_mean=62.4467	forward_ms_median=56.8463	forward_ms_min=55.8262	forward_ms_max=100.116	repeats=10
+1	class_id=65	logit=0.589598	label=sea snake
+2	class_id=58	logit=0.286391	label=water snake
+3	class_id=50	logit=-2.04675	label=American alligator, Alligator mississipiensis
+4	class_id=54	logit=-2.05398	label=hognose snake, puff adder, sand viper
+5	class_id=62	logit=-2.18224	label=rock python, rock snake, Python sebae",62.4467,56.8463,10,16.013656446217333
+0.2,0.8,ok,"forward_ms_mean=79.6326	forward_ms_median=80.262	forward_ms_min=72.8632	forward_ms_max=94.4679	repeats=10
+1	class_id=588	logit=1.92666	label=hamper
+2	class_id=65	logit=1.27285	label=sea snake
+3	class_id=58	logit=1.16459	label=water snake
+4	class_id=854	logit=0.747894	label=theater curtain, theatre curtain
+5	class_id=53	logit=-0.245219	label=ringneck snake, ring-necked snake, ring snake",79.6326,80.262,10,12.557671104547635
+0.3,0.7,ok,"forward_ms_mean=68.1404	forward_ms_median=65.1529	forward_ms_min=64.5746	forward_ms_max=88.7091	repeats=10
+1	class_id=846	logit=-0.552477	label=table lamp
+2	class_id=619	logit=-1.00752	label=lampshade, lamp shade
+3	class_id=588	logit=-1.10527	label=hamper
+4	class_id=623	logit=-1.92474	label=letter opener, paper knife, paperknife
+5	class_id=596	logit=-2.15776	label=hatchet",68.1404,65.1529,10,14.675581593298542
+0.4,0.6,ok,"forward_ms_mean=44.2443	forward_ms_median=43.3045	forward_ms_min=42.7275	forward_ms_max=49.6355	repeats=10
+1	class_id=547	logit=149.864	label=electric locomotive
+2	class_id=874	logit=125.346	label=trolleybus, trolley coach, trackless trolley
+3	class_id=449	logit=123.582	label=boathouse
+4	class_id=294	logit=108.747	label=brown bear, bruin, Ursus arctos
+5	class_id=734	logit=101.203	label=police van, police wagon, paddy wagon, patrol wagon, wagon, black Maria",44.2443,43.3045,10,22.601781472415656
+0.5,0.5,ok,"forward_ms_mean=51.6561	forward_ms_median=51.2317	forward_ms_min=50.7513	forward_ms_max=54.8687	repeats=10
+1	class_id=547	logit=92.9194	label=electric locomotive
+2	class_id=449	logit=78.0498	label=boathouse
+3	class_id=935	logit=68.2507	label=mashed potato
+4	class_id=933	logit=62.4288	label=cheeseburger
+5	class_id=964	logit=61.7327	label=potpie",51.6561,51.2317,10,19.358797896085843
+0.6,0.4,ok,"forward_ms_mean=63.4514	forward_ms_median=62.5518	forward_ms_min=55.1028	forward_ms_max=74.7472	repeats=10
+1	class_id=294	logit=49.7922	label=brown bear, bruin, Ursus arctos
+2	class_id=945	logit=39.0881	label=bell pepper
+3	class_id=659	logit=33.735	label=mixing bowl
+4	class_id=547	logit=31.5293	label=electric locomotive
+5	class_id=660	logit=31.4918	label=mobile home, manufactured home",63.4514,62.5518,10,15.760093551915324
+0.7,0.30000000000000004,ok,"forward_ms_mean=47.7076	forward_ms_median=41.7947	forward_ms_min=40.7643	forward_ms_max=91.2712	repeats=10
+1	class_id=858	logit=1.94903	label=tile roof
+2	class_id=455	logit=1.65883	label=bottlecap
+3	class_id=751	logit=1.60889	label=racer, race car, racing car
+4	class_id=752	logit=1.41272	label=racket, racquet
+5	class_id=974	logit=1.39809	label=geyser",47.7076,41.7947,10,20.96102088556121
+0.8,0.19999999999999996,ok,"forward_ms_mean=43.0419	forward_ms_median=35.9104	forward_ms_min=34.3009	forward_ms_max=93.0272	repeats=10
+1	class_id=629	logit=6.13418	label=lipstick, lip rouge
+2	class_id=740	logit=5.2268	label=power drill
+3	class_id=902	logit=3.84473	label=whistle
+4	class_id=812	logit=3.75494	label=space shuttle
+5	class_id=98	logit=3.44133	label=red-breasted merganser, Mergus serrator",43.0419,35.9104,10,23.2331751154108

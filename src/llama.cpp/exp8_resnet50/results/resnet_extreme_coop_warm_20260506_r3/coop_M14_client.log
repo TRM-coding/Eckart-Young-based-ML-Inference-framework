@@ -1,0 +1,1 @@
+[resnet-coop-steady] repeat=2 split_blocks=14 top1=65 avg_ms=3957.35 throughput=0.252695 images/s prefix_ms=3106.4 send_ms=573.225 wait_ms=277.722 server_ms=218.638 wall_ms=14804.4

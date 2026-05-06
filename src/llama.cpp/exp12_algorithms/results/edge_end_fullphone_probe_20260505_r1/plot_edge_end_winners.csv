@@ -1,0 +1,1 @@
+scenario,cpus,loads,occupied_cores,baseline_tok_s_median,major_only_best_tok_s,major_only_best_detail,edge_end_best_tok_s,edge_end_best_detail,edge_end_split_m,speedup_vs_baseline,speedup_vs_major_only,ppl,prefix_decode_ms,server_decode_ms,network_wait_ms,client_log,server_log

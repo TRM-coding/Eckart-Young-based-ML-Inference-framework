@@ -1,0 +1,2 @@
+scenario,loads,baseline_tok_s,selected_policy,selected_detail,selected_tok_s,speedup_vs_baseline,ppl,ppl_note
+8c_all_100,"100,100,100,100,100,100,100,100",27.9541,baseline_no_svd,,27.9541,1.0,15.1424,no-SVD selected path; same as Q4 baseline ctx128 sanity

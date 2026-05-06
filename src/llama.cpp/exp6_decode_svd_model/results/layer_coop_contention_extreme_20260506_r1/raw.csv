@@ -1,0 +1,7 @@
+label,load_pct,workers_per_core,method,prio_mode,policy,split_m,status,tok_s,ms_per_token,prefix_ms,server_ms,network_ms,generated,run_cpus,threads,log,server_log
+normal_w2_load100,100,2,matrixprod,normal,pc_full,,ok,0.365604,,,,,,72-79,8,normal_w2_load100_pc_full.log,
+normal_w2_load100,100,2,matrixprod,normal,major_only_2c,,ok,7.96387,,,,,,72-73,2,normal_w2_load100_major_only_2c.log,
+normal_w2_load100,100,2,matrixprod,normal,major_only_4c,,ok,6.20544,,,,,,72-75,4,normal_w2_load100_major_only_4c.log,
+normal_w2_load100,100,2,matrixprod,normal,major_only_6c,,ok,1.91684,,,,,,72-77,6,normal_w2_load100_major_only_6c.log,
+normal_w2_load100,100,2,matrixprod,normal,split,2,ok,12.9263,77.3619,305.816,607.229,324.623,16,,,normal_w2_load100_M2_client.log,normal_w2_load100_M2_server.log
+normal_w2_load100,100,2,matrixprod,normal,split,4,ok,5.50928,181.512,1620.89,598.59,684.609,16,,,normal_w2_load100_M4_client.log,normal_w2_load100_M4_server.log

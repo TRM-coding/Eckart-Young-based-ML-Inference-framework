@@ -163,14 +163,24 @@ def plot_speedup(data: pd.DataFrame) -> None:
 
 
 def plot_latency(data: pd.DataFrame) -> None:
-    fig, axes = plt.subplots(3, 1, figsize=(7.6, 5.8), sharex=True)
-    tick_labels = [CASE_LABEL[c] for c in CASE_ORDER]
-    x = np.arange(len(CASE_ORDER))
-    width = 0.36
+    latency_type_order = ["f16", "q4_0"]
+
+    fig, axes = plt.subplots(1, 2, figsize=(20.8, 6.4), sharey=False)
+    fig.patch.set_facecolor("white")
+    tick_labels = [
+        "512",
+        "1024",
+        "1536",
+        "1536",
+        "8960",
+    ]
+    x = np.arange(len(CASE_ORDER)) * 1.35
+    width = 0.30
     handles = None
     legend_labels = None
 
-    for ax, dtype in zip(axes, TYPE_ORDER):
+    for ax, dtype in zip(axes, latency_type_order):
+        ax.set_facecolor("white")
         sub = data[data["type"] == dtype].copy()
         sub = sub.set_index("case").loc[CASE_ORDER].reset_index()
 
@@ -195,27 +205,31 @@ def plot_latency(data: pd.DataFrame) -> None:
 
         if handles is None:
             handles, legend_labels = ax.get_legend_handles_labels()
-        ax.set_title(TYPE_LABEL[dtype], loc="left", pad=2)
-        ax.set_ylabel("中位延迟（ms）")
+        ax.set_title(TYPE_LABEL[dtype], loc="left", pad=6, fontsize=30)
+        ax.set_xticks(x)
+        ax.set_xticklabels(tick_labels, fontsize=28)
+        ax.set_xlim(x[0] - 0.65, x[-1] + 0.65)
+        ax.tick_params(axis="x", pad=8)
+        ax.tick_params(axis="y", labelsize=28)
         ax.grid(axis="y", color=COLORS["grid"], linewidth=0.8)
         ax.set_axisbelow(True)
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
 
-    axes[-1].set_xticks(x)
-    axes[-1].set_xticklabels(tick_labels)
-    axes[-1].set_xlabel("矩阵规模（输入维度→输出维度；K 为中间维度）")
+    axes[0].set_ylabel("中位延迟（ms）", fontsize=28)
+    fig.supxlabel("矩阵规模", fontsize=28, y=0.035)
     fig.legend(
         handles,
         legend_labels,
         loc="upper center",
-        bbox_to_anchor=(0.52, 1.01),
+        bbox_to_anchor=(0.52, 0.99),
         ncol=2,
         frameon=False,
-        handlelength=1.8,
+        fontsize=28,
+        handlelength=1.5,
         columnspacing=1.4,
     )
-    fig.subplots_adjust(left=0.105, right=0.995, bottom=0.095, top=0.86, hspace=0.36)
+    fig.subplots_adjust(left=0.07, right=0.995, bottom=0.23, top=0.80, wspace=0.24)
     save_all(fig, "svd_mul_mat_scale_latency_zh")
     plt.close(fig)
 

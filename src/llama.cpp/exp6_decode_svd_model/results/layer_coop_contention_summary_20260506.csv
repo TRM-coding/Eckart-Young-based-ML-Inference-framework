@@ -1,0 +1,4 @@
+scenario,load_pct,workers_per_core,load_method,pc_full_tok_s,best_major_only_policy,best_major_only_tok_s,best_split_m,best_split_tok_s,split_speedup_vs_pc_full,split_speedup_vs_best_major_only,best_split_prefix_ms,best_split_server_ms,best_split_network_ms,source_csv
+normal_w1_load0,0,1,matrixprod,51.4889,major_only_6c,44.5079,4,26.2376,0.510,0.590,171.386,632.299,415.705,focused/raw.csv
+normal_w1_load80,80,1,matrixprod,0.537781,major_only_4c,6.66104,2,3.0994,5.763,0.465,5989.69,2745.79,1588.82,focused/raw.csv
+normal_w2_load100,100,2,matrixprod,0.365604,major_only_2c,7.96387,2,12.9263,35.356,1.623,305.816,607.229,324.623,extreme/raw.csv

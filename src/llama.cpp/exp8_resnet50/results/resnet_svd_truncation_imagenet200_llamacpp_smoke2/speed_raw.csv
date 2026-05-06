@@ -1,0 +1,13 @@
+truncation,keep_ratio,status,output_tail,forward_ms_mean,forward_ms_median,repeat,images_s
+0.0,1.0,ok,"forward_ms_mean=45.1314	forward_ms_median=45.1314	forward_ms_min=45.1314	forward_ms_max=45.1314	repeats=1
+1	class_id=65	logit=6.25732	label=sea snake
+2	class_id=58	logit=-2.30732	label=water snake
+3	class_id=54	logit=-3.60407	label=hognose snake, puff adder, sand viper
+4	class_id=62	logit=-3.7006	label=rock python, rock snake, Python sebae
+5	class_id=67	logit=-4.34112	label=diamondback, diamondback rattlesnake, Crotalus adamanteus",45.1314,45.1314,1,22.157522257231108
+0.8,0.19999999999999996,ok,"forward_ms_mean=42.2331	forward_ms_median=42.2331	forward_ms_min=42.2331	forward_ms_max=42.2331	repeats=1
+1	class_id=629	logit=6.13418	label=lipstick, lip rouge
+2	class_id=740	logit=5.2268	label=power drill
+3	class_id=902	logit=3.84473	label=whistle
+4	class_id=812	logit=3.75494	label=space shuttle
+5	class_id=98	logit=3.44133	label=red-breasted merganser, Mergus serrator",42.2331,42.2331,1,23.678110297373387
